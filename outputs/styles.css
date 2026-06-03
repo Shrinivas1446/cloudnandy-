@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap");
 
 :root {
   --ink: #17211d;
@@ -2089,4 +2089,482 @@ textarea:focus {
 }
 .nav-link:hover::after {
   width: 100%;
+}
+
+/* ============================================================
+   ✨ MODERN UI OVERRIDES
+   ============================================================ */
+
+/* ── Updated design tokens ──────────────────────────────── */
+:root {
+  --body-font: "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif;
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  --radius-xl:  28px;
+  --grad-accent: linear-gradient(135deg, #c4693e 0%, #e08050 100%);
+  --grad-forest: linear-gradient(135deg, #1f3b33 0%, #2d5446 100%);
+  --grad-dark:   linear-gradient(135deg, #111916 0%, #1f3b33 100%);
+  --shadow-card: 0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(31,59,51,0.10);
+  --shadow-lift: 0 8px 16px rgba(0,0,0,0.06), 0 24px 56px rgba(31,59,51,0.16);
+  --shadow-glow: 0 0 0 4px rgba(180,95,60,0.18);
+  --border-card: 1px solid rgba(23,33,29,0.09);
+}
+
+/* ── Body base ──────────────────────────────────────────── */
+body {
+  background: #f8f5ee;
+  font-family: var(--body-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Navigation — modern glass pill ─────────────────────── */
+.site-header {
+  padding: 14px clamp(18px, 4vw, 64px);
+  background: rgba(15, 22, 18, 0.72);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+}
+
+.site-header.scrolled {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: rgba(15, 22, 18, 0.95);
+  border-bottom-color: rgba(255,255,255,0.08);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  background: var(--grad-accent);
+  border: none;
+  box-shadow: 0 4px 14px rgba(180,95,60,0.4);
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.nav {
+  gap: 4px;
+}
+
+.nav-link {
+  padding: 7px 14px;
+  border-radius: 99px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  opacity: 1;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.nav-link::after { display: none; } /* remove underline, using bg instead */
+
+.nav-admin-btn {
+  padding: 9px 22px;
+  border-radius: 99px;
+  background: var(--grad-accent);
+  border: none;
+  font-weight: 700;
+  font-size: 0.86rem;
+  box-shadow: 0 4px 18px rgba(180,95,60,0.38);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.nav-admin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(180,95,60,0.52);
+  background: var(--grad-accent);
+  border-color: transparent;
+}
+
+/* ── Hero — dramatic modern overlay ─────────────────────── */
+.hero {
+  min-height: 92vh;
+  padding: 160px clamp(24px, 7vw, 96px) 120px;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(180,95,60,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,206,121,0.14) 0%, transparent 50%),
+    linear-gradient(160deg, rgba(8,18,15,0.88) 0%, rgba(8,18,15,0.52) 55%, rgba(8,18,15,0.18) 100%),
+    url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=82") center/cover;
+  align-items: center;
+}
+
+.hero .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 16px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 99px;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  backdrop-filter: blur(8px);
+  color: rgba(255,255,255,0.92);
+}
+
+h1 {
+  font-size: clamp(4rem, 12vw, 9.5rem);
+  letter-spacing: -0.02em;
+  line-height: 0.88;
+}
+
+/* ── Buttons — pill shape, gradient primary ──────────────── */
+.button {
+  border-radius: 99px;
+  padding: 0 28px;
+  min-height: 50px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+
+.button.primary {
+  background: var(--grad-accent);
+  box-shadow: 0 4px 18px rgba(180,95,60,0.36);
+}
+
+.button.primary:hover {
+  background: linear-gradient(135deg, #d4754a 0%, #e89060 100%);
+  box-shadow: 0 8px 28px rgba(180,95,60,0.52);
+  transform: translateY(-2px);
+}
+
+.button.glass {
+  border-radius: 99px;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(12px);
+}
+
+.button.dark {
+  border-radius: 99px;
+  background: var(--grad-forest);
+  box-shadow: 0 4px 18px rgba(31,59,51,0.28);
+}
+
+/* ── Weather card — frosted glass ───────────────────────── */
+.weather-card {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(10, 18, 15, 0.55);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12);
+  padding: 24px;
+}
+
+/* ── Quick booking form ──────────────────────────────────── */
+.quick-booking-form {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  padding: 20px 24px;
+  border: var(--border-card);
+  gap: 16px;
+}
+
+/* ── Trust strip — modern stat cards ────────────────────── */
+.trust-strip {
+  border-radius: var(--radius-lg);
+  background: #fff;
+  border: var(--border-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.trust-strip div {
+  padding: 22px 28px;
+  border-right: 1px solid rgba(23,33,29,0.08);
+}
+
+.trust-strip strong {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: var(--grad-forest);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Section eyebrow pill ───────────────────────────────── */
+.eyebrow {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 99px;
+  background: rgba(180,95,60,0.1);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin-bottom: 14px;
+}
+
+/* Remove eyebrow pill from hero (handled separately above) */
+.hero .eyebrow {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.92);
+}
+
+/* ── Section headings ───────────────────────────────────── */
+h2 {
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ── Room cards — modern with image hover overlay ─────── */
+.room-card {
+  border-radius: var(--radius-lg);
+  border: var(--border-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.room-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lift);
+}
+
+.room-card img {
+  aspect-ratio: 4/3;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+
+.room-card:hover img {
+  transform: scale(1.06);
+}
+
+.room-body {
+  padding: 24px;
+  gap: 14px;
+}
+
+.room-body h3 {
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.room-meta span {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.text-button {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 99px;
+  background: rgba(180,95,60,0.1);
+  color: var(--accent);
+  transition: background 0.18s ease;
+}
+
+.text-button:hover {
+  background: rgba(180,95,60,0.18);
+}
+
+/* ── Amenities — modern dark cards ─────────────────────── */
+.amenities {
+  background: var(--grad-dark);
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.amenities::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 50%, rgba(180,95,60,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 90% 50%, rgba(45,84,70,0.4) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.amenity-grid {
+  gap: 2px;
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+}
+
+.amenity {
+  padding: 36px 30px;
+  min-height: 240px;
+  background: rgba(255,255,255,0.03);
+  border: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.amenity span {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: var(--display-font);
+  color: transparent;
+  background: linear-gradient(135deg, rgba(180,95,60,0.7), rgba(240,160,128,0.9));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 28px;
+  line-height: 1;
+}
+
+.amenity h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.amenity p {
+  color: rgba(255,255,255,0.62);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.amenity:hover {
+  background: rgba(255,255,255,0.07);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Intro section ──────────────────────────────────────── */
+.intro h2 {
+  font-size: clamp(1.8rem, 4.5vw, 3.6rem);
+  line-height: 1.05;
+}
+
+/* ── Contact items ──────────────────────────────────────── */
+.contact-item {
+  border-radius: var(--radius-md);
+  border: var(--border-card);
+  box-shadow: var(--shadow-card);
+  background: #fff;
+  gap: 18px;
+  padding: 22px;
+}
+
+.contact-item:hover {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-4px);
+}
+
+.contact-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(180,95,60,0.12), rgba(180,95,60,0.06));
+  font-size: 1.3rem;
+  box-shadow: 0 2px 8px rgba(180,95,60,0.12);
+}
+
+.map-embed {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+}
+
+/* ── Footer — rich gradient ─────────────────────────────── */
+.site-footer {
+  background: #0d1714;
+  padding: 44px clamp(20px, 5vw, 72px);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  gap: 32px;
+  align-items: center;
+}
+
+.site-footer strong {
+  font-family: var(--display-font);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #fff, rgba(255,255,255,0.75));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.site-footer p {
+  color: rgba(255,255,255,0.44);
+  font-size: 0.84rem;
+  margin-top: 6px;
+}
+
+.footer-links a {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  padding: 6px 14px;
+  border-radius: 99px;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.footer-links a:hover {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.92);
+}
+
+/* ── Form inputs — modern ───────────────────────────────── */
+input, select, textarea {
+  border-radius: 10px;
+  border: 1.5px solid rgba(23,33,29,0.14);
+  padding: 12px 16px;
+  background: #fafaf7;
+  font-size: 0.92rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(180,95,60,0.12);
+  background: #fff;
+}
+
+/* ── Admin card — modern ────────────────────────────────── */
+.admin-form, .booking-form {
+  border-radius: var(--radius-lg);
+}
+
+.login-card {
+  border-radius: var(--radius-xl);
+  background: rgba(12, 22, 18, 0.88);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(24px);
+}
+
+/* ── Section separator ──────────────────────────────────── */
+.section {
+  padding: 100px 0;
+}
+
+.section-heading .eyebrow {
+  margin-bottom: 16px;
+}
+
+.section-heading h2 {
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f0ede6; }
+::-webkit-scrollbar-thumb {
+  background: rgba(180,95,60,0.4);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ── Selection ──────────────────────────────────────────── */
+::selection {
+  background: rgba(180,95,60,0.22);
+  color: var(--ink);
 }
