@@ -111,8 +111,8 @@ const renderPublicUploadedProperties = async () => {
                 <div class="room-card-actions">
                   <a class="text-button" href="./property.html?id=${property.id}">Details</a>
                   <button class="text-button" type="button" data-room-select="${escapeHtml(
-                    property.name,
-                  )}">
+          property.name,
+        )}">
                     Select
                   </button>
                 </div>

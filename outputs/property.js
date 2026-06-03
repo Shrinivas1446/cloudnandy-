@@ -88,7 +88,7 @@ const updateWidgetSummary = () => {
   if (!currentProperty) return;
   const nights = getNightCount();
   const rate = currentProperty.price;
-  
+
   widgetSummaryRate.textContent = formatRupees(rate);
   widgetSummaryNights.textContent = `${nights} night${nights > 1 ? "s" : ""}`;
   widgetSummaryTotal.textContent = formatRupees(nights * rate);
@@ -123,7 +123,7 @@ const setupWidgetForm = (property) => {
 
   widgetBookingForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    
+
     // Redirect to booking.html with prefilled params
     const searchParams = new URLSearchParams();
     searchParams.set("room", property.name);
