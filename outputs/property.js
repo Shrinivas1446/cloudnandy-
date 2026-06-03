@@ -1,4 +1,4 @@
-const API_BASE = window.CLOUD_NANDY_API_BASE || "https://cloud-nandy-api.onrender.com";
+const API_BASE = window.CLOUD_NANDY_API_BASE || "http://localhost:3000";
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
