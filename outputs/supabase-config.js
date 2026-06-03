@@ -4,3 +4,9 @@ window.CLOUD_NANDY_SUPABASE = {
   bucket: "property-images",
   table: "properties",
 };
+
+// Initialize the Supabase client globally for the frontend
+window.supabaseClient = window.supabase.createClient(
+  window.CLOUD_NANDY_SUPABASE.url,
+  window.CLOUD_NANDY_SUPABASE.key
+);

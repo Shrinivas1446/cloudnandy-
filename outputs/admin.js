@@ -63,83 +63,109 @@ const normalizeProperty = (property) => ({
 });
 
 /**
- * Fetch all properties from our backend API.
+ * Upload files to Supabase Storage and return public URLs
+ */
+const uploadImages = async (imageFiles) => {
+  const uploadedUrls = [];
+  for (const file of imageFiles) {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+    const { data, error } = await window.supabaseClient.storage
+      .from(window.CLOUD_NANDY_SUPABASE.bucket)
+      .upload(fileName, file, { cacheControl: '3600', upsert: false });
+      
+    if (error) throw new Error(`Upload failed: ${error.message}`);
+    
+    const { data: { publicUrl } } = window.supabaseClient.storage
+      .from(window.CLOUD_NANDY_SUPABASE.bucket)
+      .getPublicUrl(data.path);
+      
+    uploadedUrls.push(publicUrl);
+  }
+  return uploadedUrls;
+};
+
+/**
+ * Fetch all properties from Supabase.
  */
 const fetchProperties = async () => {
-  const response = await fetch(`${API_BASE}/api/properties`);
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `HTTP ${response.status}`);
-  }
-  const data = await response.json();
+  const { data, error } = await window.supabaseClient
+    .from(window.CLOUD_NANDY_SUPABASE.table)
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) throw new Error(error.message);
   return data.map(normalizeProperty);
 };
 
 /**
- * Create a new property by sending multipart form data to the API.
+ * Create a new property directly in Supabase.
  */
 const createProperty = async ({ name, type, price, description }, imageFiles) => {
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("type", type);
-  formData.append("price", String(price));
-  formData.append("description", description);
-  imageFiles.forEach((file) => formData.append("images", file));
-
-  const response = await fetch(`${API_BASE}/api/properties`, {
-    method: "POST",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `HTTP ${response.status}`);
+  let imageUrls = [];
+  if (imageFiles && imageFiles.length > 0) {
+    imageUrls = await uploadImages(imageFiles);
   }
-  return normalizeProperty(await response.json());
+
+  const newProp = {
+    name,
+    type,
+    price: Number(price),
+    description,
+    image_url: imageUrls[0] || "",
+    image_urls: imageUrls,
+  };
+
+  const { data, error } = await window.supabaseClient
+    .from(window.CLOUD_NANDY_SUPABASE.table)
+    .insert([newProp])
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  return normalizeProperty(data);
 };
 
 /**
  * Update an existing property.
- * Pass new image files to replace images, or pass an empty array to keep existing ones.
  */
 const updateProperty = async ({ id, name, type, price, description, image_urls }, imageFiles) => {
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("type", type);
-  formData.append("price", String(price));
-  formData.append("description", description);
-
-  if (imageFiles.length > 0) {
-    imageFiles.forEach((file) => formData.append("images", file));
-  } else {
-    // Send existing URLs so the server keeps them
-    formData.append("existing_image_urls", JSON.stringify(image_urls || []));
+  let updatedImageUrls = image_urls || [];
+  
+  if (imageFiles && imageFiles.length > 0) {
+    updatedImageUrls = await uploadImages(imageFiles);
   }
 
-  const response = await fetch(`${API_BASE}/api/properties/${id}`, {
-    method: "PUT",
-    body: formData,
-  });
+  const updates = {
+    name,
+    type,
+    price: Number(price),
+    description,
+    image_url: updatedImageUrls[0] || "",
+    image_urls: updatedImageUrls,
+  };
 
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `HTTP ${response.status}`);
-  }
-  return normalizeProperty(await response.json());
+  const { data, error } = await window.supabaseClient
+    .from(window.CLOUD_NANDY_SUPABASE.table)
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  return normalizeProperty(data);
 };
 
 /**
  * Delete a property by ID.
  */
 const deleteProperty = async (id) => {
-  const response = await fetch(`${API_BASE}/api/properties/${id}`, {
-    method: "DELETE",
-  });
+  const { error } = await window.supabaseClient
+    .from(window.CLOUD_NANDY_SUPABASE.table)
+    .delete()
+    .eq('id', id);
 
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `HTTP ${response.status}`);
-  }
+  if (error) throw new Error(error.message);
   return true;
 };
 

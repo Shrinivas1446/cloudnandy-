@@ -40,12 +40,16 @@ const normalizeProperty = (property) => ({
 });
 
 const fetchPropertyById = async (id) => {
-  const response = await fetch(`${API_BASE}/api/properties/${id}`);
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `HTTP ${response.status} — property not found.`);
+  const { data, error } = await window.supabaseClient
+    .from(window.CLOUD_NANDY_SUPABASE.table)
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    throw new Error(error.message || "Property not found.");
   }
-  return normalizeProperty(await response.json());
+  return normalizeProperty(data);
 };
 
 

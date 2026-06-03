@@ -40,12 +40,15 @@ const normalizeProperty = (property) => ({
 });
 
 const fetchProperties = async () => {
-  const response = await fetch(`${API_BASE}/api/properties`);
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `HTTP ${response.status}`);
+  const { data, error } = await window.supabaseClient
+    .from(window.CLOUD_NANDY_SUPABASE.table)
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
   }
-  const data = await response.json();
+  
   return data.map(normalizeProperty);
 };
 
