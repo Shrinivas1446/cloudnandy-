@@ -156,7 +156,10 @@ app.post(
       image_urls: imageUrls,
     });
 
-    if (insertError) return sendError(res, 500, insertError.message);
+    if (insertError) {
+      console.error("INSERT error:", insertError);
+      return sendError(res, 500, insertError.message);
+    }
 
     // Fetch the inserted row
     const { data, error: fetchError } = await supabase
@@ -167,6 +170,7 @@ app.post(
       .limit(1);
 
     if (fetchError) return sendError(res, 500, fetchError.message);
+    if (!data || !data.length) return sendError(res, 500, "Insert may have been blocked by Supabase RLS. Please run supabase-setup.sql in your Supabase SQL Editor.");
     res.status(201).json(normalizeProperty(data[0]));
   }
 );
@@ -202,7 +206,7 @@ app.put(
       }
     }
 
-    const { error: updateError } = await supabase
+    const { data: updatedData, error: updateError } = await supabase
       .from(SUPABASE_TABLE)
       .update({
         name,
@@ -212,30 +216,43 @@ app.put(
         image_url: imageUrls[0] || null,
         image_urls: imageUrls,
       })
-      .eq("id", id);
+      .eq("id", id)
+      .select();
 
-    if (updateError) return sendError(res, 500, updateError.message);
+    if (updateError) {
+      console.error("UPDATE error:", updateError);
+      return sendError(res, 500, updateError.message);
+    }
 
-    // Fetch the updated row
-    const { data, error: fetchError } = await supabase
-      .from(SUPABASE_TABLE)
-      .select("*")
-      .eq("id", id);
+    if (!updatedData || updatedData.length === 0) {
+      console.error("UPDATE silent fail — RLS may be blocking writes. Run supabase-setup.sql.");
+      return sendError(res, 403, "Update was blocked by Supabase RLS. Please run supabase-setup.sql in your Supabase SQL Editor and ensure your SUPABASE_SERVICE_KEY is the service_role key.");
+    }
 
-    if (fetchError) return sendError(res, 500, fetchError.message);
-    if (!data || !data.length) return sendError(res, 404, "Property not found after update.");
-    res.json(normalizeProperty(data[0]));
+    console.log(`Updated property ${id} successfully`);
+    res.json(normalizeProperty(updatedData[0]));
   }
 );
 
 // DELETE /api/properties/:id
 app.delete("/api/properties/:id", async (req, res) => {
-  const { error } = await supabase
+  const { data: deletedData, error } = await supabase
     .from(SUPABASE_TABLE)
     .delete()
-    .eq("id", req.params.id);
+    .eq("id", req.params.id)
+    .select();
 
-  if (error) return sendError(res, 500, error.message);
+  if (error) {
+    console.error("DELETE error:", error);
+    return sendError(res, 500, error.message);
+  }
+
+  if (!deletedData || deletedData.length === 0) {
+    console.error("DELETE silent fail — RLS may be blocking deletes. Run supabase-setup.sql.");
+    return sendError(res, 403, "Delete was blocked by Supabase RLS. Please run supabase-setup.sql in your Supabase SQL Editor and ensure your SUPABASE_SERVICE_KEY is the service_role key.");
+  }
+
+  console.log(`Deleted property ${req.params.id} successfully`);
   res.json({ ok: true });
 });
 
