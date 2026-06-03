@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: cloud-nandy-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: SUPABASE_URL
+        value: https://wyjkehxbybkakgxdnoje.supabase.co
+      - key: SUPABASE_SERVICE_KEY
+        sync: false          # You will paste this in the Render dashboard
+      - key: SUPABASE_BUCKET
+        value: property-images
+      - key: SUPABASE_TABLE
+        value: properties
+      - key: ALLOWED_ORIGIN
+        value: "*"           # Tighten to your frontend URL after first deploy

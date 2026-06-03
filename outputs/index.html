@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cloud Nandy | Premium Hotel & Room Booking</title>
+    <meta
+      name="description"
+      content="Cloud Nandy premium hotel website with room browsing, date selection, guest details, and booking confirmation."
+    />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Cloud Nandy home">
+        <span class="brand-mark">C</span>
+        <span>Cloud Nandy</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#rooms">Rooms</a>
+        <a href="#amenities">Amenities</a>
+        <a href="./booking.html">Book</a>
+        <a href="./admin.html">Admin Login</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-label="Cloud Nandy">
+        <div class="weather-layer" aria-hidden="true">
+          <span class="sun-orb"></span>
+          <span class="cloud cloud-one"></span>
+          <span class="cloud cloud-two"></span>
+          <span class="mist mist-one"></span>
+          <span class="mist mist-two"></span>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Coastal boutique hotel</p>
+          <h1>Cloud Nandy</h1>
+          <p>
+            Premium rooms, polished hospitality, and effortless booking for
+            business stays, family trips, and weekend escapes.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="./booking.html">Check Availability</a>
+            <a class="button glass" href="#rooms">View Rooms</a>
+          </div>
+        </div>
+        <aside class="weather-card" aria-label="Kodaikanal weather">
+          <span class="weather-location">Kodaikanal Weather</span>
+          <strong id="weatherTemp">Loading</strong>
+          <span id="weatherCondition">Checking live conditions</span>
+          <small id="weatherMeta">Open-Meteo live forecast</small>
+        </aside>
+      </section>
+
+      <section class="quick-booking" aria-label="Quick booking">
+        <form id="quickBookingForm" class="quick-booking-form">
+          <label>
+            Check-in
+            <input id="quickCheckIn" type="date" required />
+          </label>
+          <label>
+            Check-out
+            <input id="quickCheckOut" type="date" required />
+          </label>
+          <label>
+            Guests
+            <select id="quickGuests" required>
+              <option value="1">1 guest</option>
+              <option value="2" selected>2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4">4 guests</option>
+            </select>
+          </label>
+          <button class="button dark" type="submit">Find Rooms</button>
+        </form>
+      </section>
+
+      <section class="trust-strip" aria-label="Hotel highlights">
+        <div>
+          <strong>4.8/5</strong>
+          <span>Guest rating</span>
+        </div>
+        <div>
+          <strong>24/7</strong>
+          <span>Concierge support</span>
+        </div>
+        <div>
+          <strong>Free</strong>
+          <span>High-speed Wi-Fi</span>
+        </div>
+        <div>
+          <strong>Secure</strong>
+          <span>Direct booking</span>
+        </div>
+      </section>
+
+      <section class="section intro">
+        <div>
+          <p class="eyebrow">Stay close to everything</p>
+          <h2>Designed for quiet comfort after a full day out.</h2>
+        </div>
+        <p>
+          Cloud Nandy combines polished interiors with practical booking
+          details, transparent room rates, and helpful amenity information for
+          weekend trips, business stays, and longer escapes.
+        </p>
+      </section>
+
+      <section id="rooms" class="section rooms">
+        <div class="section-heading">
+          <p class="eyebrow">Rooms</p>
+          <h2>Choose your stay</h2>
+        </div>
+        <div class="room-grid" id="roomGrid">
+          <p class="empty-list">Loading properties from Supabase...</p>
+        </div>
+      </section>
+
+      <section id="amenities" class="section amenities">
+        <div class="section-heading">
+          <p class="eyebrow">Amenities</p>
+          <h2>Everything within reach</h2>
+        </div>
+        <div class="amenity-grid">
+          <div class="amenity">
+            <span>01</span>
+            <h3>Rooftop Dining</h3>
+            <p>Seasonal breakfast, late-night small plates, and skyline tables.</p>
+          </div>
+          <div class="amenity">
+            <span>02</span>
+            <h3>Spa & Wellness</h3>
+            <p>Massage rooms, sauna access, and a quiet fitness studio.</p>
+          </div>
+          <div class="amenity">
+            <span>03</span>
+            <h3>Airport Pickup</h3>
+            <p>Private transfers can be added after your room is reserved.</p>
+          </div>
+          <div class="amenity">
+            <span>04</span>
+            <h3>Fast Wi-Fi</h3>
+            <p>Reliable high-speed internet across rooms and common spaces.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>Cloud Nandy</strong>
+        <p>28 Harbor Lane, Santa Marina</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:reservations@cloudnandy.example">reservations@cloudnandy.example</a>
+        <a href="./admin.html">Admin Login</a>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase-config.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
