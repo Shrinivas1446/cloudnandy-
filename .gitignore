@@ -48,10 +48,5 @@ Thumbs.db
 *.mov
 *.wmv
 
-# Environment variables (sensitive keys — never commit)
-.env
-.env.local
-.env.*.local
-
 # Node package lock
 package-lock.json
