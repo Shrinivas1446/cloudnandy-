@@ -3,30 +3,44 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cloud Nandy | Premium Hotel & Room Booking</title>
+    <title>Cloud Nandy Hills | Camping Stay in Poombarai, Kodaikanal</title>
     <meta
       name="description"
-      content="Cloud Nandy premium hotel website with room browsing, date selection, guest details, and booking confirmation."
+      content="Cloud Nandy Hills Camping Stay — 4.8★ rated camping cabin in Poombarai, Kodaikanal, Tamil Nadu. Book your stay with stunning hill views."
     />
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header class="site-header">
+
+    <!-- ── Page Loader ─────────────────────────────────────── -->
+    <div id="pageLoader" class="page-loader" aria-hidden="true">
+      <div class="loader-inner">
+        <div class="loader-logo">
+          <span class="loader-mark">C</span>
+        </div>
+        <div class="loader-name">Cloud Nandy</div>
+        <div class="loader-bar"><span></span></div>
+      </div>
+    </div>
+
+    <header class="site-header" id="siteHeader">
       <a class="brand" href="#top" aria-label="Cloud Nandy home">
         <span class="brand-mark">C</span>
         <span>Cloud Nandy</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
-        <a href="#rooms">Rooms</a>
-        <a href="#amenities">Amenities</a>
-        <a href="./booking.html">Book</a>
-        <a href="./admin.html">Admin Login</a>
+        <a href="#top" class="nav-link" id="navHome">Home</a>
+        <a href="#rooms" class="nav-link">Rooms</a>
+        <a href="./booking.html" class="nav-link">Book</a>
+        <a href="#amenities" class="nav-link">Amenities</a>
+        <a href="#contact" class="nav-link">Contact Us</a>
+        <a href="./admin.html" class="nav-admin-btn">Admin Login</a>
       </nav>
     </header>
 
     <main id="top">
-      <section class="hero" aria-label="Cloud Nandy">
+      <section class="hero" aria-label="Cloud Nandy Hills">
         <div class="weather-layer" aria-hidden="true">
           <span class="sun-orb"></span>
           <span class="cloud cloud-one"></span>
@@ -36,11 +50,18 @@
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-          <p class="eyebrow">Coastal boutique hotel</p>
+          <p class="eyebrow">Cloudy Nandy Hills · Poombarai, Kodaikanal</p>
           <h1>Cloud Nandy</h1>
+          <div class="hero-rating">
+            <span class="hero-stars">★★★★★</span>
+            <span class="hero-score">4.8</span>
+            <span class="hero-reviews">310 Google reviews</span>
+            <span class="hero-tag">Camping cabin · Tamil Nadu</span>
+          </div>
           <p>
-            Premium rooms, polished hospitality, and effortless booking for
-            business stays, family trips, and weekend escapes.
+            Premium camping cabins with stunning misty hill views, polished
+            hospitality, and effortless booking for nature stays, family trips,
+            and weekend escapes in Kodaikanal.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="./booking.html">Check Availability</a>
@@ -80,32 +101,33 @@
 
       <section class="trust-strip" aria-label="Hotel highlights">
         <div>
-          <strong>4.8/5</strong>
-          <span>Guest rating</span>
+          <strong>4.8 ★</strong>
+          <span>Google Rating</span>
         </div>
         <div>
-          <strong>24/7</strong>
-          <span>Concierge support</span>
+          <strong>310+</strong>
+          <span>Google Reviews</span>
         </div>
         <div>
-          <strong>Free</strong>
-          <span>High-speed Wi-Fi</span>
+          <strong>Camping</strong>
+          <span>Cabin Stay</span>
         </div>
         <div>
-          <strong>Secure</strong>
-          <span>Direct booking</span>
+          <strong>Kodaikanal</strong>
+          <span>Tamil Nadu</span>
         </div>
       </section>
 
       <section class="section intro">
         <div>
-          <p class="eyebrow">Stay close to everything</p>
-          <h2>Designed for quiet comfort after a full day out.</h2>
+          <p class="eyebrow">Stay close to the clouds</p>
+          <h2>Designed for quiet hill comfort and nature escapes.</h2>
         </div>
         <p>
-          Cloud Nandy combines polished interiors with practical booking
-          details, transparent room rates, and helpful amenity information for
-          weekend trips, business stays, and longer escapes.
+          Cloud Nandy Hills combines cozy camping cabins with breathtaking
+          misty hill views, transparent room rates, and helpful amenity
+          information for weekend getaways, nature retreats, and longer escapes
+          in Poombarai, Kodaikanal.
         </p>
       </section>
 
@@ -127,36 +149,103 @@
         <div class="amenity-grid">
           <div class="amenity">
             <span>01</span>
-            <h3>Rooftop Dining</h3>
-            <p>Seasonal breakfast, late-night small plates, and skyline tables.</p>
+            <h3>Hill View Camping</h3>
+            <p>Cozy camping cabins with stunning misty Kodaikanal hill views.</p>
           </div>
           <div class="amenity">
             <span>02</span>
-            <h3>Spa & Wellness</h3>
-            <p>Massage rooms, sauna access, and a quiet fitness studio.</p>
+            <h3>Nature Trails</h3>
+            <p>Guided trails through Poombarai's lush forests and waterfalls.</p>
           </div>
           <div class="amenity">
             <span>03</span>
-            <h3>Airport Pickup</h3>
-            <p>Private transfers can be added after your room is reserved.</p>
+            <h3>Local Cuisine</h3>
+            <p>Authentic Tamil Nadu meals with fresh local produce served daily.</p>
           </div>
           <div class="amenity">
             <span>04</span>
-            <h3>Fast Wi-Fi</h3>
-            <p>Reliable high-speed internet across rooms and common spaces.</p>
+            <h3>Peaceful Retreat</h3>
+            <p>Quiet location away from crowds — perfect for unwinding and relaxing.</p>
           </div>
         </div>
       </section>
 
+      <!-- ── Contact Us ──────────────────────────────────────── -->
+      <section id="contact" class="section contact-section">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <p class="eyebrow">Get In Touch</p>
+            <h2>Contact Us</h2>
+            <p class="contact-tagline">
+              We'd love to have you here at Cloud Nandy Hills. Reach out for
+              bookings, directions, or any questions.
+            </p>
+
+            <div class="contact-items">
+              <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div>
+                  <strong>Address</strong>
+                  <p>No.5/166, Kochakanal Street, Gundupatti Road,<br>Poombarai, Kodaikanal,<br>Tamil Nadu 624103</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div>
+                  <strong>Phone</strong>
+                  <p><a href="tel:+919095744759">090957 44759</a></p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">🕐</div>
+                <div>
+                  <strong>Getting Here</strong>
+                  <p>Approximately 4 hrs 23 mins from Coimbatore / Madurai</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">⭐</div>
+                <div>
+                  <strong>Reviews</strong>
+                  <p>4.8 · 310 Google reviews — Camping cabin in Tamil Nadu</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-map-card">
+            <div class="map-embed">
+              <iframe
+                title="Cloud Nandy Hills location"
+                src="https://maps.google.com/maps?q=Poombarai,Kodaikanal,Tamil+Nadu&output=embed"
+                width="100%"
+                height="100%"
+                style="border:0"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+            <a
+              class="button primary full"
+              href="https://maps.google.com/?q=No.5/166+Kochakanal+Street+Gundupatti+Poombarai+Kodaikanal+Tamil+Nadu+624103"
+              target="_blank"
+              rel="noopener"
+              style="margin-top:14px; border-radius:8px;"
+            >Get Directions</a>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
       <div>
-        <strong>Cloud Nandy</strong>
-        <p>28 Harbor Lane, Santa Marina</p>
+        <strong>Cloud Nandy Hills</strong>
+        <p>No.5/166, Kochakanal Street, Poombarai, Kodaikanal, Tamil Nadu 624103</p>
       </div>
       <div class="footer-links">
-        <a href="mailto:reservations@cloudnandy.example">reservations@cloudnandy.example</a>
+        <a href="tel:+919095744759">090957 44759</a>
+        <a href="#contact">Contact Us</a>
         <a href="./admin.html">Admin Login</a>
       </div>
     </footer>
@@ -164,5 +253,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./supabase-config.js"></script>
     <script src="./script.js"></script>
+    <script>
+      // Page loader
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("pageLoader");
+        setTimeout(() => {
+          loader.classList.add("loader-done");
+          setTimeout(() => loader.remove(), 700);
+        }, 1200);
+      });
+    </script>
   </body>
 </html>

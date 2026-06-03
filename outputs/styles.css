@@ -1614,3 +1614,302 @@ textarea:focus {
   }
 }
 
+/* ==========================================
+   Page Loader
+   ========================================== */
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--forest);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.page-loader.loader-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  animation: loaderFadeIn 0.5s ease;
+}
+
+@keyframes loaderFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.loader-logo {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  animation: loaderSpin 1.8s ease-in-out infinite;
+  box-shadow: 0 0 40px rgba(180, 95, 60, 0.4);
+}
+
+@keyframes loaderSpin {
+  0%   { transform: rotate(0deg) scale(1);    border-color: rgba(255,255,255,0.3); }
+  50%  { transform: rotate(180deg) scale(1.08); border-color: var(--accent); }
+  100% { transform: rotate(360deg) scale(1);  border-color: rgba(255,255,255,0.3); }
+}
+
+.loader-mark {
+  font-family: var(--display-font);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+}
+
+.loader-name {
+  font-family: var(--display-font);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.08em;
+  opacity: 0.92;
+}
+
+.loader-bar {
+  width: 160px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.loader-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #f0a080);
+  border-radius: 99px;
+  animation: loaderProgress 1.4s ease-in-out forwards;
+}
+
+@keyframes loaderProgress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+/* ==========================================
+   Nav — Admin Login Card Button
+   ========================================== */
+
+.nav-link {
+  font-size: 0.94rem;
+  font-weight: 650;
+  opacity: 0.9;
+  transition: opacity 0.16s ease;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+.nav-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.54);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.88rem;
+  font-weight: 750;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  white-space: nowrap;
+}
+
+.nav-admin-btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.82);
+  transform: translateY(-1px);
+}
+
+/* ==========================================
+   Hero — Rating Badge
+   ========================================== */
+
+.hero-rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 16px 0 20px;
+}
+
+.hero-stars {
+  color: #fbbf24;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.hero-score {
+  font-size: 1.14rem;
+  font-weight: 850;
+  color: var(--white);
+}
+
+.hero-reviews {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+}
+
+.hero-tag {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+/* ==========================================
+   Contact Us Section
+   ========================================== */
+
+.contact-section {
+  background: var(--paper);
+  padding-block: 100px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(36px, 7vw, 80px);
+  align-items: start;
+}
+
+.contact-tagline {
+  margin: 16px 0 36px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.contact-items {
+  display: grid;
+  gap: 16px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--white);
+  box-shadow: 0 8px 24px rgba(31, 59, 51, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(31, 59, 51, 0.12);
+}
+
+.contact-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: rgba(180, 95, 60, 0.1);
+  border-radius: 8px;
+}
+
+.contact-item strong {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.contact-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.94rem;
+}
+
+.contact-item a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-map-card {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 100px;
+}
+
+.map-embed {
+  width: 100%;
+  height: 380px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+/* ==========================================
+   Responsive — Contact & Nav
+   ========================================== */
+
+@media (max-width: 880px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-map-card {
+    position: static;
+  }
+
+  .map-embed {
+    height: 260px;
+  }
+
+  .nav-admin-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero-rating {
+    gap: 6px 10px;
+  }
+
+  .contact-item {
+    padding: 14px;
+  }
+}
