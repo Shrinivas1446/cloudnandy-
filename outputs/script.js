@@ -202,7 +202,24 @@ const loadKodaikanalWeather = async () => {
     const temperature = Math.round(Number(current.temperature_2m));
     const condition = weatherLabels[code] || "Pleasant hill weather";
 
-    weatherTemp.textContent = `${temperature}\u00B0C`;
+    // ── Animate temperature count-up ──────────────────────
+    const duration = 1400;
+    const startTime = performance.now();
+
+    function animateTemp(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const current_val = Math.round(eased * temperature);
+      weatherTemp.textContent = `${current_val}\u00B0C`;
+      if (progress < 1) {
+        requestAnimationFrame(animateTemp);
+      } else {
+        weatherTemp.textContent = `${temperature}\u00B0C`;
+      }
+    }
+    requestAnimationFrame(animateTemp);
+    // ─────────────────────────────────────────────────────
+
     weatherCondition.textContent = condition;
     weatherMeta.textContent = `Humidity ${current.relative_humidity_2m}% | Wind ${Math.round(
       Number(current.wind_speed_10m),
