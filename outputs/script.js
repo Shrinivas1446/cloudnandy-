@@ -264,3 +264,37 @@ roomGrid.addEventListener("click", (event) => {
 
 renderPublicUploadedProperties();
 loadKodaikanalWeather();
+
+// ── Header scroll shrink ───────────────────────────────
+const header = document.getElementById("siteHeader");
+window.addEventListener("scroll", () => {
+  header.classList.toggle("scrolled", window.scrollY > 60);
+}, { passive: true });
+
+// ── Room card stagger reveal (called after cards render) ──
+function initRoomCardReveal() {
+  const cards = document.querySelectorAll(".room-card");
+  if (!cards.length) return;
+
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  cards.forEach((card, i) => {
+    card.classList.add("reveal-card");
+    card.style.transitionDelay = `${i * 120}ms`;
+    cardObserver.observe(card);
+  });
+}
+
+// Re-run when room grid content changes (after API loads cards)
+const roomGridEl = document.getElementById("roomGrid");
+if (roomGridEl) {
+  new MutationObserver(() => initRoomCardReveal())
+    .observe(roomGridEl, { childList: true });
+}
