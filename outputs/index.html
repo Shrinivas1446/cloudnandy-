@@ -292,6 +292,20 @@
       }, { threshold: 0.5 });
 
       document.querySelectorAll("[data-count]").forEach(el => observer.observe(el));
+
+      // ── Page loader dismiss (timeout-based — not blocked by Maps iframe) ──
+      function dismissLoader() {
+        const loader = document.getElementById("pageLoader");
+        if (!loader) return;
+        loader.classList.add("loader-done");
+        setTimeout(() => { if (loader.parentNode) loader.remove(); }, 700);
+      }
+      // Dismiss after 1.5s from DOM ready, regardless of iframes/images loading
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(dismissLoader, 1500);
+      });
+      // Safety fallback: dismiss after 3s no matter what
+      setTimeout(dismissLoader, 3000);
     </script>
   </body>
 </html>
