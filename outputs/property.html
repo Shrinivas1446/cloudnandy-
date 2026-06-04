@@ -1,218 +1,223 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Property Details | Cloud Nandy</title>
-    <meta
-      name="description"
-      content="View detailed information, images, pricing, and availability for Cloud Nandy rooms and suites."
-    />
-    <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="stylesheet" href="./styles.css?v=2" />
-  </head>
-  <body class="booking-page">
-    <header class="site-header" id="siteHeader">
-      <a class="brand" href="./index.html" aria-label="Cloud Nandy home">
-        <span class="brand-mark">C</span>
-        <span>Cloud Nandy</span>
-      </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="./index.html"          class="nav-link">Home</a>
-        <a href="./index.html#rooms"    class="nav-link">Rooms</a>
-        <a href="./booking.html"        class="nav-link">Book</a>
-        <a href="./index.html#amenities" class="nav-link">Amenities</a>
-        <a href="./index.html#contact"  class="nav-link">Contact Us</a>
-        <a href="./admin.html"          class="nav-admin-btn">Admin Login</a>
-      </nav>
-    </header>
 
-    <main id="propertyMain">
-      <!-- Loading state / Fallback -->
-      <section class="section" id="loadingState">
-        <p class="empty-list">Loading property details...</p>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Property Details | Cloud Nandy</title>
+  <meta name="description"
+    content="View detailed information, images, pricing, and availability for Cloud Nandy rooms and suites." />
+  <link rel="preconnect" href="https://images.unsplash.com" />
+  <link rel="stylesheet" href="./styles.css?v=2" />
+</head>
+
+<body class="booking-page">
+  <header class="site-header" id="siteHeader">
+    <a class="brand" href="./index.html" aria-label="Cloud Nandy home">
+      <span class="brand-mark">C</span>
+      <span>Cloud Nandy</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="./index.html" class="nav-link">Home</a>
+      <a href="./index.html#rooms" class="nav-link">Rooms</a>
+      <a href="./booking.html" class="nav-link">Book</a>
+      <a href="./index.html#amenities" class="nav-link">Amenities</a>
+      <a href="./index.html#contact" class="nav-link">Contact Us</a>
+      <a href="./admin.html" class="nav-admin-btn">Admin Login</a>
+    </nav>
+  </header>
+
+  <main id="propertyMain">
+    <!-- Loading state / Fallback -->
+    <section class="section" id="loadingState">
+      <p class="empty-list">Loading property details...</p>
+    </section>
+
+    <!-- Dynamic content wrapper (hidden until loaded) -->
+    <div id="propertyContent" hidden>
+      <section class="property-hero" id="propertyHeroBanner">
+        <div class="property-hero-content">
+          <a href="./index.html#rooms" class="property-back-link">
+            &larr; Back to Rooms
+          </a>
+          <span class="property-badge" id="propertyHeroType">Room</span>
+          <h1 id="propertyHeroName">Premium Room</h1>
+          <div class="property-meta-strip">
+            <span>
+              <strong id="propertyHeroPrice">&#8377;0</strong> / night
+            </span>
+          </div>
+        </div>
       </section>
 
-      <!-- Dynamic content wrapper (hidden until loaded) -->
-      <div id="propertyContent" hidden>
-        <section class="property-hero" id="propertyHeroBanner">
-          <div class="property-hero-content">
-            <a href="./index.html#rooms" class="property-back-link">
-              &larr; Back to Rooms
-            </a>
-            <span class="property-badge" id="propertyHeroType">Room</span>
-            <h1 id="propertyHeroName">Premium Room</h1>
-            <div class="property-meta-strip">
-              <span>
-                <strong id="propertyHeroPrice">&#8377;0</strong> / night
-              </span>
+      <section class="section property-detail-layout">
+        <!-- Left Column: Media & Info -->
+        <div class="details-panel">
+          <!-- Image Gallery -->
+          <div class="gallery-section">
+            <div class="gallery-main-wrap">
+              <img id="galleryMainImage" src="" alt="Property detail main view" class="gallery-main" />
+            </div>
+            <div class="thumbnail-carousel" id="galleryThumbnails">
+              <!-- Thumbnails will be injected dynamically -->
             </div>
           </div>
-        </section>
 
-        <section class="section property-detail-layout">
-          <!-- Left Column: Media & Info -->
-          <div class="details-panel">
-            <!-- Image Gallery -->
-            <div class="gallery-section">
-              <div class="gallery-main-wrap">
-                <img id="galleryMainImage" src="" alt="Property detail main view" class="gallery-main" />
+          <!-- Description & Specs -->
+          <div class="property-description-card">
+            <h2>About this space</h2>
+            <p id="propertyDescriptionText">Detailed description goes here...</p>
+
+            <!-- Specs Grid -->
+            <div class="property-specs" id="propertySpecsGrid">
+              <div class="spec-item">
+                <span class="spec-label">Room Type</span>
+                <span class="spec-val" id="specRoomType">Room</span>
               </div>
-              <div class="thumbnail-carousel" id="galleryThumbnails">
-                <!-- Thumbnails will be injected dynamically -->
+              <div class="spec-item">
+                <span class="spec-label">Occupancy</span>
+                <span class="spec-val" id="specOccupancy"></span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Guests Allowed</span>
+                <span class="spec-val" id="specGuestsAllowed"></span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Check-in</span>
+                <span class="spec-val" id="specCheckIn"></span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Check-out</span>
+                <span class="spec-val" id="specCheckOut"></span>
               </div>
             </div>
 
-            <!-- Description & Specs -->
-            <div class="property-description-card">
-              <h2>About this space</h2>
-              <p id="propertyDescriptionText">Detailed description goes here...</p>
-
-              <!-- Specs Grid -->
-              <div class="property-specs">
-                <div class="spec-item">
-                  <span class="spec-label">Room Type</span>
-                  <span class="spec-val" id="specRoomType">Room</span>
+            <!-- Amenities -->
+            <div class="property-amenities">
+              <h3>Included Amenities</h3>
+              <div class="amenities-list">
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Welcome Drink</span>
                 </div>
-                <div class="spec-item">
-                  <span class="spec-label">Occupancy</span>
-                  <span class="spec-val">Up to 2 Guests</span>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Unlimited Complementary Breakfast</span>
                 </div>
-                <div class="spec-item">
-                  <span class="spec-label">Check-in</span>
-                  <span class="spec-val">01:00 PM</span>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Wi-Fi Available</span>
                 </div>
-                <div class="spec-item">
-                  <span class="spec-label">Check-out</span>
-                  <span class="spec-val">11:00 AM</span>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Purified Water</span>
                 </div>
-              </div>
-
-              <!-- Amenities -->
-              <div class="property-amenities">
-                <h3>Included Amenities</h3>
-                <div class="amenities-list">
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Welcome Drink</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Unlimited Complementary Breakfast</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Wi-Fi Available</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Purified Water</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Power Backup</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>24 Hours Hot Water</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Toiletries &amp; Dental Kit</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Coffee Maker</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Gated Security &amp; CCTV</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Solar Fencing Around Campus</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Vehicle Parking</span>
-                  </div>
-                  <div class="amenity-item">
-                    <span class="amenity-bullet"></span>
-                    <span>Hill View Balcony</span>
-                  </div>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Power Backup</span>
+                </div>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>24 Hours Hot Water</span>
+                </div>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Toiletries &amp; Dental Kit</span>
+                </div>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Coffee Maker</span>
+                </div>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Gated Security &amp; CCTV</span>
+                </div>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Solar Fencing Around Campus</span>
+                </div>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Vehicle Parking</span>
+                </div>
+                <div class="amenity-item">
+                  <span class="amenity-bullet"></span>
+                  <span>Hill View Balcony</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Right Column: Booking Widget -->
-          <div class="booking-widget-card">
-            <div class="widget-price">
-              <span class="widget-price-val" id="widgetPriceVal">&#8377;0</span>
-              <span class="widget-price-label">/ night</span>
+        <!-- Right Column: Booking Widget -->
+        <div class="booking-widget-card">
+          <div class="widget-price">
+            <span class="widget-price-val" id="widgetPriceVal">&#8377;0</span>
+            <span class="widget-price-label">/ night</span>
+          </div>
+
+          <form id="widgetBookingForm" class="widget-form">
+            <label>
+              Check-in
+              <input id="widgetCheckIn" type="date" required />
+            </label>
+            <label>
+              Check-out
+              <input id="widgetCheckOut" type="date" required />
+            </label>
+            <label>
+              Guests
+              <select id="widgetGuests" required>
+                <option value="1">1 guest</option>
+                <option value="2" selected>2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+              </select>
+            </label>
+
+            <!-- Live pricing calculation -->
+            <div class="widget-summary">
+              <div class="widget-summary-line">
+                <span>Price per night</span>
+                <span id="widgetSummaryRate">&#8377;0</span>
+              </div>
+              <div class="widget-summary-line">
+                <span>Nights</span>
+                <span id="widgetSummaryNights">1 night</span>
+              </div>
+              <div class="widget-summary-line total">
+                <span>Estimated Total</span>
+                <span id="widgetSummaryTotal">&#8377;0</span>
+              </div>
             </div>
 
-            <form id="widgetBookingForm" class="widget-form">
-              <label>
-                Check-in
-                <input id="widgetCheckIn" type="date" required />
-              </label>
-              <label>
-                Check-out
-                <input id="widgetCheckOut" type="date" required />
-              </label>
-              <label>
-                Guests
-                <select id="widgetGuests" required>
-                  <option value="1">1 guest</option>
-                  <option value="2" selected>2 guests</option>
-                  <option value="3">3 guests</option>
-                  <option value="4">4 guests</option>
-                </select>
-              </label>
+            <button class="button primary full" type="submit">Book This Room</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
 
-              <!-- Live pricing calculation -->
-              <div class="widget-summary">
-                <div class="widget-summary-line">
-                  <span>Price per night</span>
-                  <span id="widgetSummaryRate">&#8377;0</span>
-                </div>
-                <div class="widget-summary-line">
-                  <span>Nights</span>
-                  <span id="widgetSummaryNights">1 night</span>
-                </div>
-                <div class="widget-summary-line total">
-                  <span>Estimated Total</span>
-                  <span id="widgetSummaryTotal">&#8377;0</span>
-                </div>
-              </div>
+  <footer class="site-footer">
+    <div>
+      <strong>Cloud Nandy Hills</strong>
+      <p>No.5/166, Kochakanal Street, Poombarai, Kodaikanal, Tamil Nadu 624103</p>
+    </div>
+    <div class="footer-links">
+      <a href="./index.html">Back to Website</a>
+      <a href="tel:+919095744759">090957 44759</a>
+    </div>
+  </footer>
 
-              <button class="button primary full" type="submit">Book This Room</button>
-            </form>
-          </div>
-        </section>
-      </div>
-    </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase-config.js?v=2"></script>
+  <script src="./property.js?v=2"></script>
+  <script>
+    const header = document.getElementById("siteHeader");
+    window.addEventListener("scroll", () => {
+      header.classList.toggle("scrolled", window.scrollY > 60);
+    }, { passive: true });
+  </script>
+</body>
 
-    <footer class="site-footer">
-      <div>
-        <strong>Cloud Nandy Hills</strong>
-        <p>No.5/166, Kochakanal Street, Poombarai, Kodaikanal, Tamil Nadu 624103</p>
-      </div>
-      <div class="footer-links">
-        <a href="./index.html">Back to Website</a>
-        <a href="tel:+919095744759">090957 44759</a>
-      </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./supabase-config.js?v=2"></script>
-    <script src="./property.js?v=2"></script>
-    <script>
-      const header = document.getElementById("siteHeader");
-      window.addEventListener("scroll", () => {
-        header.classList.toggle("scrolled", window.scrollY > 60);
-      }, { passive: true });
-    </script>
-  </body>
 </html>

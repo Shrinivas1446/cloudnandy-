@@ -18,6 +18,10 @@ const propertyForm = document.querySelector("#propertyForm");
 const propertyName = document.querySelector("#propertyName");
 const propertyPrice = document.querySelector("#propertyPrice");
 const propertyType = document.querySelector("#propertyType");
+const propertyOccupancy = document.querySelector("#propertyOccupancy");
+const propertyGuestsAllowed = document.querySelector("#propertyGuestsAllowed");
+const propertyCheckIn = document.querySelector("#propertyCheckIn");
+const propertyCheckOut = document.querySelector("#propertyCheckOut");
 const propertyDescription = document.querySelector("#propertyDescription");
 const propertyImage = document.querySelector("#propertyImage");
 const imagePreview = document.querySelector("#imagePreview");
@@ -54,6 +58,10 @@ const normalizeProperty = (property) => ({
   type: property.type,
   price: Number(property.price),
   description: property.description,
+  occupancy: property.occupancy,
+  guests_allowed: property.guests_allowed,
+  check_in: property.check_in,
+  check_out: property.check_out,
   image_urls: property.image_urls?.length
     ? property.image_urls
     : [property.image_url || property.image].filter(Boolean),
@@ -101,7 +109,7 @@ const fetchProperties = async () => {
 /**
  * Create a new property directly in Supabase.
  */
-const createProperty = async ({ name, type, price, description }, imageFiles) => {
+const createProperty = async ({ name, type, price, description, occupancy, guests_allowed, check_in, check_out }, imageFiles) => {
   let imageUrls = [];
   if (imageFiles && imageFiles.length > 0) {
     imageUrls = await uploadImages(imageFiles);
@@ -112,6 +120,10 @@ const createProperty = async ({ name, type, price, description }, imageFiles) =>
     type,
     price: Number(price),
     description,
+    occupancy,
+    guests_allowed,
+    check_in,
+    check_out,
     image_url: imageUrls[0] || "",
     image_urls: imageUrls,
   };
@@ -129,7 +141,7 @@ const createProperty = async ({ name, type, price, description }, imageFiles) =>
 /**
  * Update an existing property.
  */
-const updateProperty = async ({ id, name, type, price, description, image_urls }, imageFiles) => {
+const updateProperty = async ({ id, name, type, price, description, occupancy, guests_allowed, check_in, check_out, image_urls }, imageFiles) => {
   let updatedImageUrls = image_urls || [];
   
   if (imageFiles && imageFiles.length > 0) {
@@ -141,6 +153,10 @@ const updateProperty = async ({ id, name, type, price, description, image_urls }
     type,
     price: Number(price),
     description,
+    occupancy,
+    guests_allowed,
+    check_in,
+    check_out,
     image_url: updatedImageUrls[0] || "",
     image_urls: updatedImageUrls,
   };
@@ -198,6 +214,10 @@ const startEditProperty = (property) => {
   propertyPrice.value = property.price;
   propertyType.value = property.type;
   propertyDescription.value = property.description;
+  propertyOccupancy.value = property.occupancy || "";
+  propertyGuestsAllowed.value = property.guests_allowed || "";
+  propertyCheckIn.value = property.check_in || "";
+  propertyCheckOut.value = property.check_out || "";
   propertyImage.value = "";
   propertyImage.required = false;
   propertySubmitButton.textContent = "Save Changes";
@@ -316,6 +336,10 @@ propertyForm.addEventListener("submit", (event) => {
     type: propertyType.value,
     price: Number(propertyPrice.value),
     description: propertyDescription.value.trim(),
+    occupancy: propertyOccupancy.value.trim(),
+    guests_allowed: propertyGuestsAllowed.value.trim(),
+    check_in: propertyCheckIn.value.trim(),
+    check_out: propertyCheckOut.value.trim(),
     image_urls: editingPropertyImages,
   };
 

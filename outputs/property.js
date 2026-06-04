@@ -31,6 +31,10 @@ const normalizeProperty = (property) => ({
   type: property.type,
   price: Number(property.price),
   description: property.description,
+  occupancy: property.occupancy,
+  guests_allowed: property.guests_allowed,
+  check_in: property.check_in,
+  check_out: property.check_out,
   image_urls: property.image_urls?.length
     ? property.image_urls
     : [property.image_url || property.image].filter(Boolean),
@@ -66,7 +70,12 @@ const galleryMainImage = document.querySelector("#galleryMainImage");
 const galleryThumbnails = document.querySelector("#galleryThumbnails");
 
 const propertyDescriptionText = document.querySelector("#propertyDescriptionText");
+const propertySpecsGrid = document.querySelector("#propertySpecsGrid");
 const specRoomType = document.querySelector("#specRoomType");
+const specOccupancy = document.querySelector("#specOccupancy");
+const specGuestsAllowed = document.querySelector("#specGuestsAllowed");
+const specCheckIn = document.querySelector("#specCheckIn");
+const specCheckOut = document.querySelector("#specCheckOut");
 
 const widgetPriceVal = document.querySelector("#widgetPriceVal");
 const widgetCheckIn = document.querySelector("#widgetCheckIn");
@@ -153,7 +162,15 @@ const renderPropertyDetails = (property) => {
 
   // Left column: Description & specs
   propertyDescriptionText.textContent = property.description;
-  specRoomType.textContent = property.type || "Room";
+  
+  if (propertySpecsGrid) {
+    specRoomType.textContent = property.type || "Room";
+    
+    if (specOccupancy) specOccupancy.textContent = property.occupancy || "N/A";
+    if (specGuestsAllowed) specGuestsAllowed.textContent = property.guests_allowed || "N/A";
+    if (specCheckIn) specCheckIn.textContent = property.check_in || "N/A";
+    if (specCheckOut) specCheckOut.textContent = property.check_out || "N/A";
+  }
 
   // Gallery
   if (property.image_urls && property.image_urls.length > 0) {
