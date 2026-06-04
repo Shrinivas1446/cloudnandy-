@@ -36,7 +36,6 @@ const normalizeProperty = (property) => ({
   type: property.type,
   price: Number(property.price),
   description: property.description,
-  occupancy: property.occupancy,
   guests_allowed: property.guests_allowed,
   check_in: property.check_in,
   check_out: property.check_out,
