@@ -13,6 +13,11 @@ const addDays = (date, days) => {
 
 const formatRupees = (amount) => `\u20B9${Number(amount).toLocaleString("en-IN")}`;
 
+const truncateText = (text, maxLength = 100) => {
+  if (!text) return "";
+  return text.length > maxLength ? text.slice(0, maxLength).trimEnd() + "..." : text;
+};
+
 const escapeHtml = (value) =>
   String(value).replace(/[&<>"']/g, (character) => {
     const entities = {
@@ -106,8 +111,7 @@ const renderPublicUploadedProperties = async () => {
                 <a href="./property.html?id=${property.id}">
                   <h3>${escapeHtml(property.name)}</h3>
                 </a>
-                <p>${escapeHtml(property.description)}</p>
-                <p>${property.image_urls.length} image(s)</p>
+                <p class="room-card-desc">${escapeHtml(truncateText(property.description, 100))}</p>
               </div>
               <div class="room-meta">
                 <span>${formatRupees(property.price)}/night</span>
