@@ -260,6 +260,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./supabase-config.js?v=2"></script>
     <script src="./script.js?v=2"></script>
+    <script src="./animations.js?v=2"></script>
     <script>
       // ── Count-up animation ────────────────────────────────
       function animateCount(el) {
@@ -295,20 +296,7 @@
       }, { threshold: 0.5 });
       document.querySelectorAll("[data-count]").forEach(el => countObserver.observe(el));
 
-      // ── Scroll reveal animation ───────────────────────────
-      const DELAYS = { "0": 0, "1": 120, "2": 240, "3": 360 };
 
-      const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const d = entry.target.dataset.delay || "0";
-            const ms = DELAYS[d] ?? 0;
-            setTimeout(() => entry.target.classList.add("is-visible"), ms);
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
-      document.querySelectorAll("[data-reveal]").forEach(el => revealObserver.observe(el));
 
       // ── Page loader dismiss ───────────────────────────────
       function dismissLoader() {

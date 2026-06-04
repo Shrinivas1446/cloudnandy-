@@ -246,24 +246,25 @@ const renderUploadedProperties = async () => {
 
   propertyList.innerHTML = properties
     .map(
-      (property) => `
-        <article class="property-item" data-property-id="${escapeHtml(property.id)}">
-          <img src="${property.image}" alt="${escapeHtml(property.name)}" />
+      (p, i) => `
+        <article class="property-item" data-reveal data-delay="${Math.min(i, 5)}" data-property-id="${escapeHtml(p.id)}">
+          <img src="${p.image_url || p.image || "https://placehold.co/400x300?text=No+Image"}" alt="${escapeHtml(p.name)}" />
           <div>
-            <h4>${escapeHtml(property.name)}</h4>
-            <p>${escapeHtml(property.type)}</p>
-            <p>${escapeHtml(property.description)}</p>
-            <p>${property.image_urls.length} image(s)</p>
-            <span class="property-price">${formatRupees(property.price)}/night</span>
+            <h4>${escapeHtml(p.name)}</h4>
+            <p>${escapeHtml(p.type)}</p>
+            <p>${escapeHtml(p.description)}</p>
+            <p>${p.image_urls.length} image(s)</p>
+            <span class="property-price">${formatRupees(p.price)}/night</span>
             <div class="property-actions">
-              <button class="text-button" type="button" data-edit-property="${escapeHtml(property.id)}">Edit</button>
-              <button class="danger-button" type="button" data-delete-property="${escapeHtml(property.id)}">Delete</button>
+              <button class="text-button" type="button" data-edit-property="${escapeHtml(p.id)}">Edit</button>
+              <button class="danger-button" type="button" data-delete-property="${escapeHtml(p.id)}">Delete</button>
             </div>
           </div>
         </article>
-      `,
-    )
+    `)
     .join("");
+
+  if (window.initScrollAnimations) window.initScrollAnimations();
 };
 
 // ─── Event listeners ──────────────────────────────────────────────────────────

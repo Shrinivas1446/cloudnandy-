@@ -27,8 +27,8 @@
     </header>
 
     <main>
-      <section class="booking-hero">
-        <div>
+      <section class="booking-hero" data-reveal>
+        <div data-reveal data-delay="1">
           <p class="eyebrow">Secure direct booking</p>
           <h1>Reserve your stay</h1>
           <p>
@@ -39,7 +39,7 @@
       </section>
 
       <section class="section booking-section booking-page-section">
-        <div class="booking-copy">
+        <div class="booking-copy" data-reveal>
           <p class="eyebrow">Cloud Nandy</p>
           <h2>Booking details</h2>
           <p>
@@ -49,7 +49,7 @@
         </div>
 
         <div class="booking-flow">
-          <div class="booking-property-panel">
+          <div class="booking-property-panel" data-reveal data-delay="1">
             <div class="section-heading compact">
               <p class="eyebrow">Select property</p>
               <h2>Available stays</h2>
@@ -57,7 +57,7 @@
             <div id="bookingPropertyGrid" class="booking-property-grid" aria-live="polite"></div>
           </div>
 
-          <form id="bookingForm" class="booking-form">
+          <form id="bookingForm" class="booking-form" data-reveal data-delay="2">
             <div class="form-row">
               <label>
                 Full name
@@ -140,6 +140,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./supabase-config.js?v=2"></script>
     <script src="./booking.js?v=2"></script>
+    <script src="./animations.js?v=2"></script>
     <script>
       const header = document.getElementById("siteHeader");
       window.addEventListener("scroll", () => {

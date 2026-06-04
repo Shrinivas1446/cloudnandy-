@@ -35,8 +35,8 @@
 
     <!-- Dynamic content wrapper (hidden until loaded) -->
     <div id="propertyContent" hidden>
-      <section class="property-hero" id="propertyHeroBanner">
-        <div class="property-hero-content">
+      <section class="property-hero" id="propertyHeroBanner" data-reveal>
+        <div class="property-hero-content" data-reveal data-delay="1">
           <a href="./index.html#rooms" class="property-back-link">
             &larr; Back to Rooms
           </a>
@@ -52,9 +52,9 @@
 
       <section class="section property-detail-layout">
         <!-- Left Column: Media & Info -->
-        <div class="details-panel">
+        <div class="details-panel" data-reveal>
           <!-- Image Gallery -->
-          <div class="gallery-section">
+          <div class="gallery-section" data-reveal data-delay="1">
             <div class="gallery-main-wrap">
               <img id="galleryMainImage" src="" alt="Property detail main view" class="gallery-main" />
             </div>
@@ -64,7 +64,7 @@
           </div>
 
           <!-- Description & Specs -->
-          <div class="property-description-card">
+          <div class="property-description-card" data-reveal data-delay="2">
             <h2>About this space</h2>
             <p id="propertyDescriptionText">Detailed description goes here...</p>
 
@@ -89,7 +89,7 @@
             </div>
 
             <!-- Amenities -->
-            <div class="property-amenities">
+            <div class="property-amenities" data-reveal data-delay="3">
               <h3>Included Amenities</h3>
               <div class="amenities-list">
                 <div class="amenity-item">
@@ -208,6 +208,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./supabase-config.js?v=2"></script>
   <script src="./property.js?v=2"></script>
+  <script src="./animations.js?v=2"></script>
   <script>
     const header = document.getElementById("siteHeader");
     window.addEventListener("scroll", () => {

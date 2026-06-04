@@ -105,9 +105,9 @@ const renderBookingProperties = (properties) => {
 
   bookingPropertyGrid.innerHTML = properties
     .map(
-      (property) => `
-        <article class="booking-property-card" data-booking-property data-property-name="${escapeHtml(
-          property.name,
+      (property, i) => `
+        <article class="room-card" data-reveal data-delay="${Math.min(i, 5)}" tabindex="0" role="button" aria-pressed="false" data-property-id="${escapeHtml(
+          property.id,
         )}">
           <img src="${property.image}" alt="${escapeHtml(property.name)}" />
           <div>
@@ -124,6 +124,8 @@ const renderBookingProperties = (properties) => {
       `,
     )
     .join("");
+
+  if (window.initScrollAnimations) window.initScrollAnimations();
 
   updateSelectedPropertyCard();
 };

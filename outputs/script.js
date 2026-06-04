@@ -101,8 +101,8 @@ const renderPublicUploadedProperties = async () => {
 
     roomGrid.innerHTML = properties
       .map(
-        (property) => `
-          <article class="room-card" data-room-card data-room="${escapeHtml(property.name)}">
+        (property, i) => `
+          <article class="room-card" data-room-card data-room="${escapeHtml(property.name)}" data-reveal data-delay="${Math.min(i, 5)}">
             <a href="./property.html?id=${property.id}">
               <img src="${property.image}" alt="${escapeHtml(property.name)}" />
             </a>
@@ -129,6 +129,8 @@ const renderPublicUploadedProperties = async () => {
         `,
       )
       .join("");
+    
+    if (window.initScrollAnimations) window.initScrollAnimations();
   } catch (error) {
     roomGrid.innerHTML = `<p class="empty-list">Unable to load Supabase properties. ${escapeHtml(
       error.message,

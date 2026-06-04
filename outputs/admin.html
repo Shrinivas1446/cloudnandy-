@@ -13,7 +13,7 @@
   <body class="admin-page">
     <main class="admin-shell">
       <section id="loginPanel" class="login-panel">
-        <div class="login-card">
+        <div class="login-card" data-reveal>
           <a class="brand admin-brand" href="./index.html" aria-label="Cloud Nandy home">
             <span class="brand-mark">C</span>
             <span>Cloud Nandy</span>
@@ -47,7 +47,7 @@
       </section>
 
       <section id="dashboardPanel" class="dashboard-panel" hidden>
-        <header class="dashboard-header">
+        <header class="dashboard-header" data-reveal>
           <div>
             <a class="brand dashboard-brand" href="./index.html" aria-label="Cloud Nandy home">
               <span class="brand-mark">C</span>
@@ -61,7 +61,7 @@
           </div>
         </header>
 
-        <section class="admin-overview" aria-label="Admin overview">
+        <section class="admin-overview" aria-label="Admin overview" data-reveal data-delay="1">
           <div>
             <span>Total Properties</span>
             <strong id="totalProperties">0</strong>
@@ -77,7 +77,7 @@
         </section>
 
         <section class="admin-workspace">
-          <form id="propertyForm" class="admin-form">
+          <form id="propertyForm" class="admin-form" data-reveal data-delay="2">
             <div class="section-heading compact">
               <p class="eyebrow">New listing</p>
               <h2>Upload property</h2>
@@ -159,7 +159,7 @@
             </div>
           </form>
 
-          <div class="admin-list-wrap">
+          <div class="admin-list-wrap" data-reveal data-delay="3">
             <div class="admin-list-head">
               <div>
                 <p class="eyebrow">Inventory</p>
@@ -176,5 +176,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./supabase-config.js?v=2"></script>
     <script src="./admin.js?v=2"></script>
+    <script src="./animations.js?v=2"></script>
   </body>
 </html>
