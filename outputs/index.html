@@ -9,14 +9,33 @@
       content="Cloud Nandy Hills Camping Stay — 4.8★ rated camping cabin in Poombarai, Kodaikanal, Tamil Nadu. Book your stay with stunning hill views."
     />
     <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="stylesheet" href="./styles.css?v=2" />
+    <link rel="stylesheet" href="./styles.css?v=3" />
   </head>
   <body>
 
     <div id="pageLoader" class="page-loader" aria-hidden="true">
       <div class="loader-inner">
-        <div class="loader-logo">
-          <span class="loader-mark">C</span>
+        <div class="loader-animation-container">
+          <svg class="loader-svg" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Stars twinkle in the night hill sky -->
+            <circle cx="22" cy="18" r="1.2" fill="#ffd1b3" class="star star-1"/>
+            <circle cx="78" cy="14" r="0.9" fill="#ffffff" class="star star-2"/>
+            <circle cx="48" cy="10" r="1.5" fill="#ffffff" class="star star-3"/>
+            
+            <!-- Mountain silhouettes -->
+            <path class="mountain-back" d="M 15 65 L 45 28 L 75 65" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path class="mountain-front" d="M 35 65 L 60 34 L 85 65" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+            
+            <!-- Camping tent/cabin with glow -->
+            <path class="cabin-outline" d="M 56 65 L 64 50 L 72 65 Z" fill="rgba(18, 38, 32, 0.7)" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" />
+            <polygon points="62,60 64,57 66,60" fill="#ffd1b3" class="cabin-glow" />
+            
+            <!-- Floating cloud over the mountains -->
+            <path class="loader-cloud" d="M 28 40 C 28 37, 31 35, 34 35 C 35 32, 39 30, 43 30 C 48 30, 51 33, 52 36 C 54 36, 56 37, 56 40 C 56 43, 52 44, 48 44 L 34 44 C 30 44, 28 43, 28 40 Z" fill="#ffffff" fill-opacity="0.85" />
+            
+            <!-- Horizon line -->
+            <line x1="10" y1="65" x2="90" y2="65" stroke="rgba(255, 255, 255, 0.35)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </div>
         <div class="loader-name">Cloud Nandy</div>
         <div class="loader-bar"><span></span></div>
@@ -71,9 +90,9 @@
         </div>
         <aside class="weather-card hero-anim-6" aria-label="Kodaikanal weather">
           <span class="weather-location">Kodaikanal Weather</span>
-          <strong id="weatherTemp">Loading</strong>
-          <span id="weatherCondition">Checking live conditions</span>
-          <small id="weatherMeta">Open-Meteo live forecast</small>
+          <strong id="weatherTemp">Kodaikanal</strong>
+          <span id="weatherCondition">Weather</span>
+          <small id="weatherMeta">Local forecast</small>
         </aside>
       </section>
 
@@ -258,9 +277,10 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./supabase-config.js?v=2"></script>
-    <script src="./script.js?v=2"></script>
-    <script src="./animations.js?v=2"></script>
+    <script src="./supabase-config.js?v=3"></script>
+    <script src="./script.js?v=3"></script>
+    <script src="./animations.js?v=3"></script>
+    <script src="./lightbox.js?v=3"></script>
     <script>
       // ── Count-up animation ────────────────────────────────
       function animateCount(el) {

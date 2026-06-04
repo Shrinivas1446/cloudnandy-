@@ -39,11 +39,11 @@ const normalizeProperty = (property) => ({
   guests_allowed: property.guests_allowed,
   check_in: property.check_in,
   check_out: property.check_out,
-  image_urls: property.image_urls?.length
+  image_urls: (property.image_urls && property.image_urls.length)
     ? property.image_urls
     : [property.image_url || property.image].filter(Boolean),
-  image: property.image_url || property.image_urls?.[0] || property.image,
-  image_url: property.image_url || property.image_urls?.[0] || property.image,
+  image: property.image_url || (property.image_urls && property.image_urls[0]) || property.image,
+  image_url: property.image_url || (property.image_urls && property.image_urls[0]) || property.image,
   createdAt: property.created_at || property.createdAt,
 });
 
@@ -96,7 +96,14 @@ const updateSelectedPropertyCard = () => {
   });
 };
 
+const truncateText = (text, maxLength) => {
+  if (!text) return "";
+  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+};
+
 const renderBookingProperties = (properties) => {
+  bookingPropertyGrid.innerHTML = "";
+
   if (!properties.length) {
     bookingPropertyGrid.innerHTML =
       '<p class="empty-list">No properties found in Supabase. Add one from the admin panel.</p>';
@@ -106,19 +113,32 @@ const renderBookingProperties = (properties) => {
   bookingPropertyGrid.innerHTML = properties
     .map(
       (property, i) => `
-        <article class="room-card" data-reveal data-delay="${Math.min(i, 5)}" tabindex="0" role="button" aria-pressed="false" data-property-id="${escapeHtml(
+        <article class="booking-property-card" data-reveal data-delay="${Math.min(i, 5)}" tabindex="0" role="button" aria-pressed="false" data-property-id="${escapeHtml(
           property.id,
         )}">
-          <img src="${property.image}" alt="${escapeHtml(property.name)}" />
+          <a href="#" class="lightbox-trigger" data-images="${escapeHtml(JSON.stringify(property.image_urls || [property.image]))}" data-index="0">
+            <img src="${property.image}" alt="${escapeHtml(property.name)}" />
+          </a>
           <div>
             <span>${escapeHtml(property.type || "Room")}</span>
             <h3>${escapeHtml(property.name)}</h3>
-            <p>${escapeHtml(property.description)}</p>
-            <p>${property.image_urls.length} image(s)</p>
-            <strong>${formatRupees(property.price)}/night</strong>
-            <button class="text-button" type="button" data-property-select="${escapeHtml(
-              property.name,
-            )}">Select</button>
+            <p>${escapeHtml(truncateText(property.description, 100))}</p>
+            <div class="booking-card-footer">
+              <div class="booking-card-price">
+                <strong>${formatRupees(property.price)}/night</strong>
+                <button class="text-button" type="button" data-property-select="${escapeHtml(
+                  property.name,
+                )}">Select</button>
+              </div>
+              <div class="booking-card-thumbs">
+                ${(property.image_urls || [property.image]).slice(0, 3).map((url, idx) => `
+                  <a href="#" class="lightbox-trigger" data-images="${escapeHtml(JSON.stringify(property.image_urls || [property.image]))}" data-index="${idx}">
+                    <img src="${url}" alt="Room preview" />
+                  </a>
+                `).join('')}
+                ${(property.image_urls || []).length > 3 ? `<span class="more-thumbs">+${property.image_urls.length - 3}</span>` : ''}
+              </div>
+            </div>
           </div>
         </article>
       `,

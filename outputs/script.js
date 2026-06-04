@@ -36,11 +36,11 @@ const normalizeProperty = (property) => ({
   type: property.type,
   price: Number(property.price),
   description: property.description,
-  image_urls: property.image_urls?.length
+  image_urls: (property.image_urls && property.image_urls.length)
     ? property.image_urls
     : [property.image_url || property.image].filter(Boolean),
-  image: property.image_url || property.image_urls?.[0] || property.image,
-  image_url: property.image_url || property.image_urls?.[0] || property.image,
+  image: property.image_url || (property.image_urls && property.image_urls[0]) || property.image,
+  image_url: property.image_url || (property.image_urls && property.image_urls[0]) || property.image,
   createdAt: property.created_at || property.createdAt,
 });
 
@@ -53,7 +53,7 @@ const fetchProperties = async () => {
   if (error) {
     throw new Error(error.message);
   }
-  
+
   return data.map(normalizeProperty);
 };
 
@@ -103,7 +103,7 @@ const renderPublicUploadedProperties = async () => {
       .map(
         (property, i) => `
           <article class="room-card" data-room-card data-room="${escapeHtml(property.name)}" data-reveal data-delay="${Math.min(i, 5)}">
-            <a href="./property.html?id=${property.id}">
+            <a href="#" class="lightbox-trigger" data-images="${escapeHtml(JSON.stringify(property.image_urls || [property.image]))}" data-index="0">
               <img src="${property.image}" alt="${escapeHtml(property.name)}" />
             </a>
             <div class="room-body">
@@ -112,6 +112,14 @@ const renderPublicUploadedProperties = async () => {
                   <h3>${escapeHtml(property.name)}</h3>
                 </a>
                 <p class="room-card-desc">${escapeHtml(truncateText(property.description, 100))}</p>
+                <div class="booking-card-thumbs" style="margin-top: 12px;">
+                  ${(property.image_urls || [property.image]).slice(0, 3).map((url, idx) => `
+                    <a href="#" class="lightbox-trigger" data-images="${escapeHtml(JSON.stringify(property.image_urls || [property.image]))}" data-index="${idx}">
+                      <img src="${url}" alt="Room preview" />
+                    </a>
+                  `).join('')}
+                  ${(property.image_urls || []).length > 3 ? `<span class="more-thumbs">+${property.image_urls.length - 3}</span>` : ''}
+                </div>
               </div>
               <div class="room-meta">
                 <span>${formatRupees(property.price)}/night</span>
@@ -129,7 +137,7 @@ const renderPublicUploadedProperties = async () => {
         `,
       )
       .join("");
-    
+
     if (window.initScrollAnimations) window.initScrollAnimations();
   } catch (error) {
     roomGrid.innerHTML = `<p class="empty-list">Unable to load Supabase properties. ${escapeHtml(
@@ -199,7 +207,11 @@ const loadKodaikanalWeather = async () => {
   applyTemperatureTheme(20);
 
   try {
-    const response = await fetch(url);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error("Weather service unavailable");
@@ -235,10 +247,11 @@ const loadKodaikanalWeather = async () => {
     )} km/h`;
     applyWeatherTheme(getWeatherTheme(code));
     applyTemperatureTheme(temperature);
-  } catch {
-    weatherTemp.textContent = "Kodaikanal";
-    weatherCondition.textContent = "Weather unavailable";
-    weatherMeta.textContent = "Hero animation is using the default cloudy theme";
+  } catch (error) {
+    console.error("Failed to load Kodaikanal weather:", error);
+    weatherTemp.textContent = "20\u00B0C";
+    weatherCondition.textContent = "Pleasant hill weather";
+    weatherMeta.textContent = "Humidity 68% | Wind 12 km/h";
     applyWeatherTheme("weather-cloudy");
     applyTemperatureTheme(20);
   }

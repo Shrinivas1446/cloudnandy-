@@ -60,11 +60,11 @@ const normalizeProperty = (property) => ({
   guests_allowed: property.guests_allowed,
   check_in: property.check_in,
   check_out: property.check_out,
-  image_urls: property.image_urls?.length
+  image_urls: (property.image_urls && property.image_urls.length)
     ? property.image_urls
     : [property.image_url || property.image].filter(Boolean),
-  image: property.image_url || property.image_urls?.[0] || property.image,
-  image_url: property.image_url || property.image_urls?.[0] || property.image,
+  image: property.image_url || (property.image_urls && property.image_urls[0]) || property.image,
+  image_url: property.image_url || (property.image_urls && property.image_urls[0]) || property.image,
   createdAt: property.created_at || property.createdAt,
 });
 
@@ -205,7 +205,7 @@ const resetPropertyForm = () => {
 
 const startEditProperty = (property) => {
   editingPropertyId = property.id;
-  editingPropertyImages = property.image_urls?.length ? property.image_urls : [property.image].filter(Boolean);
+  editingPropertyImages = (property.image_urls && property.image_urls.length) ? property.image_urls : [property.image].filter(Boolean);
   propertyName.value = property.name;
   propertyPrice.value = property.price;
   propertyType.value = property.type;
@@ -237,7 +237,7 @@ const renderUploadedProperties = async () => {
 
   currentProperties = properties;
   totalProperties.textContent = String(properties.length);
-  latestUpload.textContent = properties[0]?.name || "None";
+  latestUpload.textContent = (properties[0] && properties[0].name) ? properties[0].name : "None";
 
   if (!properties.length) {
     propertyList.innerHTML = '<p class="empty-list">No uploaded properties yet.</p>';
@@ -377,7 +377,7 @@ propertyList.addEventListener("click", (event) => {
 
   if (!editButton && !deleteButton) return;
 
-  const propertyId = editButton?.dataset.editProperty || deleteButton?.dataset.deleteProperty;
+  const propertyId = (editButton && editButton.dataset.editProperty) || (deleteButton && deleteButton.dataset.deleteProperty);
   const property = currentProperties.find((item) => item.id === propertyId);
 
   if (!property) {
