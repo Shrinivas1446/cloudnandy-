@@ -11,15 +11,18 @@
     <link rel="stylesheet" href="./styles.css?v=2" />
   </head>
   <body class="booking-page">
-    <header class="booking-header">
+    <header class="site-header" id="siteHeader">
       <a class="brand" href="./index.html" aria-label="Cloud Nandy home">
         <span class="brand-mark">C</span>
         <span>Cloud Nandy</span>
       </a>
-      <nav class="nav" aria-label="Booking navigation">
-        <a href="./index.html#rooms">Rooms</a>
-        <a href="./index.html#amenities">Amenities</a>
-        <a href="./admin.html">Admin Login</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="./index.html"           class="nav-link">Home</a>
+        <a href="./index.html#rooms"     class="nav-link">Rooms</a>
+        <a href="./booking.html"         class="nav-link">Book</a>
+        <a href="./index.html#amenities" class="nav-link">Amenities</a>
+        <a href="./index.html#contact"   class="nav-link">Contact Us</a>
+        <a href="./admin.html"           class="nav-admin-btn">Admin Login</a>
       </nav>
     </header>
 
@@ -125,17 +128,23 @@
 
     <footer class="site-footer">
       <div>
-        <strong>Cloud Nandy</strong>
-        <p>28 Harbor Lane, Santa Marina</p>
+        <strong>Cloud Nandy Hills</strong>
+        <p>No.5/166, Kochakanal Street, Poombarai, Kodaikanal, Tamil Nadu 624103</p>
       </div>
       <div class="footer-links">
         <a href="./index.html">Back to Website</a>
-        <a href="mailto:reservations@cloudnandy.example">reservations@cloudnandy.example</a>
+        <a href="tel:+919095744759">090957 44759</a>
       </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./supabase-config.js?v=2"></script>
     <script src="./booking.js?v=2"></script>
+    <script>
+      const header = document.getElementById("siteHeader");
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("scrolled", window.scrollY > 60);
+      }, { passive: true });
+    </script>
   </body>
 </html>
