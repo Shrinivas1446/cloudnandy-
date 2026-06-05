@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cloud Nandy Hills | Camping Stay in Poombarai, Kodaikanal</title>
+    <meta
+      name="description"
+      content="Cloud Nandy Hills Camping Stay — 4.8★ rated camping cabin in Poombarai, Kodaikanal, Tamil Nadu. Book your stay with stunning hill views."
+    />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+
+    <!-- ── Page Loader ─────────────────────────────────────── -->
+    <div id="pageLoader" class="page-loader" aria-hidden="true">
+      <div class="loader-inner">
+        <div class="loader-logo">
+          <span class="loader-mark">C</span>
+        </div>
+        <div class="loader-name">Cloud Nandy</div>
+        <div class="loader-bar"><span></span></div>
+      </div>
+    </div>
+
+    <header class="site-header" id="siteHeader">
+      <a class="brand" href="#top" aria-label="Cloud Nandy home">
+        <span class="brand-mark">C</span>
+        <span>Cloud Nandy</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#top"          class="nav-link" id="navHome">Home</a>
+        <a href="#rooms"        class="nav-link">Rooms</a>
+        <a href="./booking.html" class="nav-link">Book</a>
+        <a href="#amenities"   class="nav-link">Amenities</a>
+        <a href="#contact"     class="nav-link">Contact Us</a>
+        <a href="./admin.html" class="nav-admin-btn">Admin Login</a>
+      </nav>
+    </header>
+
+    <main id="top">
+
+      <!-- ── Hero ───────────────────────────────────────────── -->
+      <section class="hero" aria-label="Cloud Nandy Hills">
+        <div class="weather-layer" aria-hidden="true">
+          <span class="sun-orb"></span>
+          <span class="cloud cloud-one"></span>
+          <span class="cloud cloud-two"></span>
+          <span class="mist mist-one"></span>
+          <span class="mist mist-two"></span>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow hero-anim-1">Cloudy Nandy Hills · Poombarai, Kodaikanal</p>
+          <h1 class="hero-anim-2">Cloud Nandy</h1>
+          <div class="hero-rating hero-anim-3">
+            <span class="hero-stars">★★★★★</span>
+            <span class="hero-score">4.8</span>
+            <span class="hero-reviews">310 Google reviews</span>
+            <span class="hero-tag">Camping cabin · Tamil Nadu</span>
+          </div>
+          <p class="hero-anim-4">
+            Premium camping cabins with stunning misty hill views, polished
+            hospitality, and effortless booking for nature stays, family trips,
+            and weekend escapes in Kodaikanal.
+          </p>
+          <div class="hero-actions hero-anim-5">
+            <a class="button primary" href="./booking.html">Check Availability</a>
+            <a class="button glass"   href="#rooms">View Rooms</a>
+          </div>
+        </div>
+        <aside class="weather-card hero-anim-6" aria-label="Kodaikanal weather">
+          <span class="weather-location">Kodaikanal Weather</span>
+          <strong id="weatherTemp">Loading</strong>
+          <span id="weatherCondition">Checking live conditions</span>
+          <small id="weatherMeta">Open-Meteo live forecast</small>
+        </aside>
+      </section>
+
+      <!-- ── Quick Booking ───────────────────────────────────── -->
+      <section class="quick-booking" aria-label="Quick booking">
+        <form id="quickBookingForm" class="quick-booking-form" data-reveal data-delay="0">
+          <label>
+            Check-in
+            <input id="quickCheckIn" type="date" required />
+          </label>
+          <label>
+            Check-out
+            <input id="quickCheckOut" type="date" required />
+          </label>
+          <label>
+            Guests
+            <select id="quickGuests" required>
+              <option value="1">1 guest</option>
+              <option value="2" selected>2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4">4 guests</option>
+            </select>
+          </label>
+          <button class="button dark" type="submit">Find Rooms</button>
+        </form>
+      </section>
+
+      <!-- ── Trust Strip ─────────────────────────────────────── -->
+      <section class="trust-strip" aria-label="Hotel highlights">
+        <div data-reveal data-delay="0">
+          <strong data-count="4.8" data-suffix=" ★">4.8 ★</strong>
+          <span>Google Rating</span>
+        </div>
+        <div data-reveal data-delay="1">
+          <strong data-count="310" data-suffix="+">310+</strong>
+          <span>Google Reviews</span>
+        </div>
+        <div data-reveal data-delay="2">
+          <strong>Camping</strong>
+          <span>Cabin Stay</span>
+        </div>
+        <div data-reveal data-delay="3">
+          <strong>Kodaikanal</strong>
+          <span>Tamil Nadu</span>
+        </div>
+      </section>
+
+      <!-- ── Intro ───────────────────────────────────────────── -->
+      <section class="section intro">
+        <div data-reveal="left">
+          <p class="eyebrow">Stay close to the clouds</p>
+          <h2>Designed for quiet hill comfort and nature escapes.</h2>
+        </div>
+        <p data-reveal="right">
+          Cloud Nandy Hills combines cozy camping cabins with breathtaking
+          misty hill views, transparent room rates, and helpful amenity
+          information for weekend getaways, nature retreats, and longer escapes
+          in Poombarai, Kodaikanal.
+        </p>
+      </section>
+
+      <!-- ── Rooms ───────────────────────────────────────────── -->
+      <section id="rooms" class="section rooms">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Rooms</p>
+          <h2>Choose your stay</h2>
+        </div>
+        <div class="room-grid" id="roomGrid">
+          <p class="empty-list">Loading properties from Supabase...</p>
+        </div>
+      </section>
+
+      <!-- ── Amenities ───────────────────────────────────────── -->
+      <section id="amenities" class="section amenities">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Amenities</p>
+          <h2>Everything within reach</h2>
+        </div>
+        <div class="amenity-grid">
+          <div class="amenity" data-reveal data-delay="0">
+            <span data-count="1" data-prefix="0">01</span>
+            <h3>Hill View Camping</h3>
+            <p>Cozy camping cabins with stunning misty Kodaikanal hill views.</p>
+          </div>
+          <div class="amenity" data-reveal data-delay="1">
+            <span data-count="2" data-prefix="0">02</span>
+            <h3>Nature Trails</h3>
+            <p>Guided trails through Poombarai's lush forests and waterfalls.</p>
+          </div>
+          <div class="amenity" data-reveal data-delay="2">
+            <span data-count="3" data-prefix="0">03</span>
+            <h3>Local Cuisine</h3>
+            <p>Authentic Tamil Nadu meals with fresh local produce served daily.</p>
+          </div>
+          <div class="amenity" data-reveal data-delay="3">
+            <span data-count="4" data-prefix="0">04</span>
+            <h3>Peaceful Retreat</h3>
+            <p>Quiet location away from crowds — perfect for unwinding and relaxing.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Contact Us ──────────────────────────────────────── -->
+      <section id="contact" class="section contact-section">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <p class="eyebrow" data-reveal>Get In Touch</p>
+            <h2 data-reveal data-delay="1">Contact Us</h2>
+            <p class="contact-tagline" data-reveal data-delay="2">
+              We'd love to have you here at Cloud Nandy Hills. Reach out for
+              bookings, directions, or any questions.
+            </p>
+
+            <div class="contact-items">
+              <div class="contact-item" data-reveal data-delay="0">
+                <div class="contact-icon">📍</div>
+                <div>
+                  <strong>Address</strong>
+                  <p>No.5/166, Kochakanal Street, Gundupatti Road,<br>Poombarai, Kodaikanal,<br>Tamil Nadu 624103</p>
+                </div>
+              </div>
+              <div class="contact-item" data-reveal data-delay="1">
+                <div class="contact-icon">📞</div>
+                <div>
+                  <strong>Phone</strong>
+                  <p><a href="tel:+919095744759">090957 44759</a></p>
+                </div>
+              </div>
+              <div class="contact-item" data-reveal data-delay="2">
+                <div class="contact-icon">🕐</div>
+                <div>
+                  <strong>Getting Here</strong>
+                  <p>Approximately 4 hrs 23 mins from Coimbatore / Madurai</p>
+                </div>
+              </div>
+              <div class="contact-item" data-reveal data-delay="3">
+                <div class="contact-icon">⭐</div>
+                <div>
+                  <strong>Reviews</strong>
+                  <p>4.8 · 310 Google reviews — Camping cabin in Tamil Nadu</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-map-card" data-reveal="right">
+            <div class="map-embed">
+              <iframe
+                title="Cloud Nandy Hills location"
+                src="https://maps.google.com/maps?q=Poombarai,Kodaikanal,Tamil+Nadu&output=embed"
+                width="100%"
+                height="100%"
+                style="border:0"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+            <a
+              class="button primary full"
+              href="https://maps.google.com/?q=No.5/166+Kochakanal+Street+Gundupatti+Poombarai+Kodaikanal+Tamil+Nadu+624103"
+              target="_blank"
+              rel="noopener"
+              style="margin-top:14px; border-radius:8px;"
+            >Get Directions</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ── Footer ──────────────────────────────────────────── -->
+    <footer class="site-footer" data-reveal>
+      <div>
+        <strong>Cloud Nandy Hills</strong>
+        <p>No.5/166, Kochakanal Street, Poombarai, Kodaikanal, Tamil Nadu 624103</p>
+      </div>
+      <div class="footer-links">
+        <a href="tel:+919095744759">090957 44759</a>
+        <a href="#contact">Contact Us</a>
+        <a href="./admin.html">Admin Login</a>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase-config.js"></script>
+    <script src="./script.js"></script>
+    <script>
+      // ── Count-up animation ────────────────────────────────
+      function animateCount(el) {
+        const raw      = el.dataset.count;
+        const suffix   = el.dataset.suffix || "";
+        const prefix   = el.dataset.prefix || "";
+        const decimals = raw.includes(".") ? raw.split(".")[1].length : 0;
+        const target   = parseFloat(raw);
+        const duration = 1600;
+        const start    = performance.now();
+        function step(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const e = 1 - Math.pow(1 - p, 3);
+          const v = e * target;
+          el.textContent = prefix
+            ? String(Math.round(v)).padStart(2, "0") + suffix
+            : v.toFixed(decimals) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = prefix
+            ? String(Math.round(target)).padStart(2, "0") + suffix
+            : raw + suffix;
+        }
+        requestAnimationFrame(step);
+      }
+
+      const countObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCount(entry.target);
+            countObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll("[data-count]").forEach(el => countObserver.observe(el));
+
+      // ── Scroll reveal animation ───────────────────────────
+      const DELAYS = { "0": 0, "1": 120, "2": 240, "3": 360 };
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const d = entry.target.dataset.delay || "0";
+            const ms = DELAYS[d] ?? 0;
+            setTimeout(() => entry.target.classList.add("is-visible"), ms);
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll("[data-reveal]").forEach(el => revealObserver.observe(el));
+
+      // ── Page loader dismiss ───────────────────────────────
+      function dismissLoader() {
+        const loader = document.getElementById("pageLoader");
+        if (!loader) return;
+        loader.classList.add("loader-done");
+        setTimeout(() => { if (loader.parentNode) loader.remove(); }, 700);
+      }
+      document.addEventListener("DOMContentLoaded", () => setTimeout(dismissLoader, 1500));
+      setTimeout(dismissLoader, 3000);
+    </script>
+  </body>
+</html>
