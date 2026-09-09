@@ -3,150 +3,1186 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Book Your Stay | Cloud Nandy</title>
-    <meta
-      name="description"
-      content="Reserve a room at Cloud Nandy with date selection, room choice, guest details, and booking summary."
-    />
-    <link rel="stylesheet" href="./styles.css?v=3" />
+    <title>Book Your Stay | Cloud Nandy Hills</title>
+    <meta name="description" content="Book your stay directly at Cloud Nandy Hills - Poombarai, Kodaikanal." />
+    <link rel="stylesheet" href="./styles.css?v=5" />
+    <!-- Load Supabase CDN FIRST before anything else -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      /* Global select styling for light mode */
+      select {
+        color-scheme: light;
+        appearance: none;
+        -webkit-appearance: none;
+        background-color: #f8f8f8 !important;
+        color: #222 !important;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 4px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23333333' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px !important;
+      }
+      select option {
+        background-color: #ffffff !important;
+        color: #222 !important;
+      }
+      select:focus {
+        outline: none;
+        border-color: rgba(180, 95, 60, 0.6);
+      }
+
+      /* ── Booking Page Reset ── */
+      body.booking-page {
+        background: #f2f2f2 !important;
+        background-attachment: fixed !important;
+        min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      /* ── Property Banner ── */
+      .property-banner {
+        background: #b45f3c;
+        padding: 20px 30px;
+      }
+      .banner-header-wrap {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 6px;
+        flex-wrap: wrap;
+      }
+      .property-banner h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0;
+      }
+      .bk-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #ffffff;
+        background: rgba(0, 0, 0, 0.22);
+        padding: 6px 14px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 700;
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+      .bk-back-btn:hover {
+        background: rgba(0, 0, 0, 0.38);
+        transform: translateX(-2px);
+      }
+      .property-banner .address {
+        color: rgba(255,255,255,0.92);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 0;
+      }
+
+      /* ── Main Container ── */
+      .bk-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px 20px 60px;
+      }
+
+      /* ── Two-Column Layout ── */
+      .bk-layout {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+      }
+      .bk-main-col {
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* ── Booking Summary Sidebar ── */
+      .bk-sidebar {
+        flex: 0 0 280px;
+        width: 280px;
+        position: sticky;
+        top: 20px;
+        display: none;
+      }
+      .bk-sidebar.active {
+        display: block;
+      }
+      .bk-sb-header {
+        background: linear-gradient(135deg, #b45f3c 0%, #9a4f32 100%);
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+        padding: 12px 16px;
+        border-radius: 10px 10px 0 0;
+      }
+      .bk-sb-body {
+        background: #ffffff;
+        border: 1px solid rgba(180, 95, 60, 0.18);
+        border-top: none;
+        border-radius: 0 0 10px 10px;
+        padding: 14px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      }
+      .bk-sb-dates {
+        font-size: 0.78rem;
+        color: #555;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(180, 95, 60, 0.15);
+      }
+      .bk-sb-dates strong {
+        color: #222;
+        margin-right: 4px;
+      }
+      .bk-sb-item-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .bk-sb-item-name {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #222222;
+      }
+      .bk-sb-remove {
+        background: #c0392b;
+        border: none;
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        font-size: 0.7rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background 0.2s;
+      }
+      .bk-sb-remove:hover { background: #a93226; }
+
+      /* Sidebar config table */
+      .bk-sb-config {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72rem;
+        margin-bottom: 12px;
+        border: 1px solid rgba(255, 209, 179, 0.15);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .bk-sb-config th {
+        background: #b45f3c;
+        color: #fff;
+        padding: 5px 6px;
+        text-align: center;
+        font-weight: 700;
+        border: 1px solid #9a4f32;
+      }
+      .bk-sb-config td {
+        background: #f8f8f8;
+        color: #333;
+        padding: 5px 6px;
+        text-align: center;
+        border: 1px solid rgba(180,95,60,0.1);
+      }
+
+      /* Price details toggle */
+      .bk-sb-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #444;
+        cursor: pointer;
+        padding: 8px 0;
+        border-top: 1px solid rgba(180,95,60,0.12);
+        border-bottom: 1px solid rgba(180,95,60,0.12);
+        user-select: none;
+        margin-bottom: 10px;
+      }
+      .bk-sb-toggle .caret {
+        font-size: 0.7rem;
+        transition: transform 0.2s;
+      }
+      .bk-sb-toggle.collapsed .caret { transform: rotate(180deg); }
+
+      /* Price breakdown rows */
+      .bk-sb-breakdown {
+        font-size: 0.78rem;
+        margin-bottom: 10px;
+      }
+      .bk-sb-breakdown.hidden { display: none; }
+      .bk-sb-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 3px 0;
+        color: #666;
+      }
+      .bk-sb-row.bold {
+        color: #111;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+      .bk-sb-row.italic small {
+        font-style: italic;
+        color: #888;
+      }
+
+      /* Grand total */
+      .bk-sb-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0 12px;
+        border-top: 1px solid rgba(180,95,60,0.15);
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: #111;
+      }
+      .bk-sb-total span:last-child {
+        font-size: 1.1rem;
+      }
+
+      /* Reserve button */
+      .bk-sb-reserve {
+        width: 100%;
+        background: linear-gradient(135deg, #b45f3c 0%, #9a4f32 100%);
+        color: #fff;
+        border: none;
+        padding: 11px;
+        font-weight: 800;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: opacity 0.2s, transform 0.15s;
+      }
+      .bk-sb-reserve:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+
+      /* ── Availability Bar ── */
+      .bk-avail {
+        background: #ffffff !important;
+        border: 1px solid rgba(180, 95, 60, 0.2) !important;
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      }
+      .bk-avail h2 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #222;
+        margin: 0 0 5px 0;
+        border-bottom: 2px solid #b45f3c;
+        display: inline-block;
+        padding-bottom: 3px;
+      }
+      .bk-avail-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+      .bk-avail-controls select,
+      .bk-avail-controls input[type="date"],
+      .bk-avail-controls input[type="number"] {
+        padding: 9px 12px;
+        border: 1px solid rgba(0,0,0,0.15);
+        background: #f8f8f8;
+        color: #222;
+        font-size: 0.88rem;
+        outline: none;
+        flex: 1;
+        min-width: 120px;
+        border-radius: 4px;
+        color-scheme: light;
+      }
+      .bk-avail-controls select {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23333333' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px;
+      }
+      .bk-avail-controls input[type="date"]::-webkit-calendar-picker-indicator {
+        opacity: 0;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        right: 8px;
+        z-index: 2;
+      }
+      .bk-avail-controls input[type="date"] {
+        position: relative;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3Cpath d='M9 16l2 2 4-4'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 36px;
+      }
+      .bk-avail-controls select option {
+        background: #ffffff;
+        color: #222;
+      }
+      .bk-avail-controls input[type="number"] { flex: 0 0 65px; min-width: 60px; }
+      .bk-avail-btn {
+        background: #b45f3c;
+        color: #fff;
+        border: none;
+        padding: 10px 22px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        white-space: nowrap;
+        border-radius: 4px;
+      }
+      .bk-avail-btn:hover { background: #9a4f32; }
+
+      /* ── Loading / Empty ── */
+      .bk-loading {
+        padding: 40px 20px;
+        color: #a0b5ab;
+        font-size: 0.95rem;
+      }
+
+      /* ── Room Card ── */
+      .bk-room-card {
+        background: #ffffff !important;
+        border: 1px solid rgba(180, 95, 60, 0.15) !important;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        color: #222;
+      }
+      .bk-room-title {
+        padding: 12px 18px;
+        border-bottom: 1px solid rgba(180, 95, 60, 0.12);
+      }
+      .bk-room-title h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #222;
+        margin: 0;
+      }
+      .bk-room-title h3::after {
+        content: '';
+        display: block;
+        width: 30px;
+        height: 2px;
+        background: #b45f3c;
+        margin-top: 5px;
+      }
+      .bk-room-body {
+        display: flex;
+        padding: 18px;
+        gap: 20px;
+      }
+
+      /* Image */
+      .bk-room-img-wrap {
+        flex: 0 0 240px;
+        position: relative;
+      }
+      .bk-img-slider { position: relative; }
+      .bk-slide-img {
+        width: 100%;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+        display: block;
+        cursor: pointer;
+        border-radius: 6px;
+      }
+      .bk-img-slider .lightbox-trigger {
+        cursor: pointer;
+      }
+      .bk-slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.55);
+        color: #fff;
+        border: none;
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        z-index: 2;
+        border-radius: 50%;
+      }
+      .bk-slider-btn.prev { left: 4px; }
+      .bk-slider-btn.next { right: 4px; }
+
+      /* Facilities */
+      .bk-facilities { margin-top: 14px; }
+      .bk-facilities h4 {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #ffffff;
+        border-bottom: 2px solid #b45f3c;
+        display: inline-block;
+        margin: 0 0 10px 0;
+        padding-bottom: 3px;
+      }
+      .bk-fac-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 10px;
+      }
+      .bk-fac-grid span {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #666;
+        text-transform: uppercase;
+      }
+
+      /* Right panel */
+      .bk-room-details { flex: 1; }
+
+      .bk-std-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .bk-std-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #444;
+      }
+      .bk-std-price {
+        background: #222;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        color: #fff;
+        padding: 3px 10px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        position: relative;
+        border-radius: 2px;
+      }
+      .bk-std-price::before {
+        content: '';
+        position: absolute;
+        left: -6px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 5px solid transparent;
+        border-right-color: #222;
+      }
+
+      /* Rate table */
+      .bk-rate-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+        margin-bottom: 10px;
+        border: 1px solid rgba(0,0,0,0.1);
+      }
+      .bk-rate-table th,
+      .bk-rate-table td {
+        border: 1px solid rgba(0,0,0,0.08);
+        padding: 6px 8px;
+        text-align: center;
+        color: #333;
+        background: #f9f9f9;
+      }
+      .bk-rate-table th {
+        background: #333;
+        color: #ffffff;
+      }
+      .bk-rate-table th:first-child,
+      .bk-rate-table td:first-child { text-align: left; }
+
+      .bk-tax-note {
+        font-size: 0.72rem;
+        color: #888;
+        margin: 0 0 14px 0;
+      }
+
+      /* Info bar */
+      .bk-info-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(0,0,0,0.08);
+        padding-top: 12px;
+        margin-bottom: 12px;
+      }
+      .bk-room-info-lbl {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #444;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .bk-i-icon {
+        background: #b45f3c;
+        color: #fff;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        font-size: 0.6rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .bk-rooms-left {
+        font-size: 0.82rem;
+        color: #555;
+        margin-right: 10px;
+      }
+      .bk-book-btn {
+        background: #b45f3c;
+        color: #fff;
+        border: none;
+        padding: 5px 14px;
+        font-weight: 700;
+        font-size: 0.82rem;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      .bk-book-btn:hover { background: #9a4f32; }
+
+      /* Config table */
+      .bk-config-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.78rem;
+        border: 1px solid rgba(0,0,0,0.08);
+      }
+      .bk-config-table th {
+        background: #b45f3c;
+        color: #fff;
+        padding: 5px 8px;
+        text-align: center;
+        border: 1px solid #9a4f32;
+        font-weight: 700;
+      }
+      .bk-config-table td {
+        border: 1px solid rgba(0,0,0,0.07);
+        padding: 5px 8px;
+        text-align: center;
+        background: #f9f9f9;
+      }
+      .bk-config-select {
+        border: none;
+        background: transparent;
+        font-size: 0.78rem;
+        outline: none;
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+        color: #222;
+      }
+      .bk-config-select option {
+        background: #ffffff;
+        color: #222;
+      }
+
+      /* ── Checkout Full-Page Overlay ── */
+      .bk-overlay {
+        position: fixed;
+        inset: 0;
+        background: #f2f2f2;
+        overflow-y: auto;
+        z-index: 9999;
+        display: none;
+      }
+      .bk-overlay.open { display: block; }
+
+      /* Checkout page inner wrapper */
+      .ck-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px 60px;
+      }
+
+      /* Top bar inside overlay */
+      .ck-topbar {
+        background: #b45f3c;
+        padding: 14px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+      .ck-topbar-title {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #fff;
+      }
+      .ck-close {
+        background: rgba(0,0,0,0.25);
+        border: none;
+        color: #fff;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      .ck-close:hover { background: rgba(0,0,0,0.45); }
+
+      /* Two-col checkout layout */
+      .ck-cols {
+        display: flex;
+        gap: 22px;
+        align-items: flex-start;
+      }
+      .ck-left  { flex: 1; min-width: 0; }
+      .ck-right { flex: 0 0 260px; position: sticky; top: 16px; }
+
+      /* Section card */
+      .ck-section {
+        background: #ffffff;
+        border: 1px solid rgba(180,95,60,0.15);
+        border-radius: 10px;
+        margin-bottom: 18px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      }
+      .ck-section-header {
+        background: linear-gradient(135deg, #b45f3c 0%, #9a4f32 100%);
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        padding: 10px 16px;
+      }
+      .ck-section-body {
+        padding: 18px 20px;
+      }
+
+      /* Guest info form */
+      .ck-form-group { margin-bottom: 15px; }
+      .ck-form-group label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 6px;
+      }
+      .ck-form-group label span.req { color: #e74c3c; margin-left: 2px; }
+      .ck-name-row {
+        display: flex;
+        gap: 8px;
+      }
+      .ck-name-row select {
+        flex: 0 0 72px;
+        padding: 9px 8px;
+        background: #f8f8f8;
+        border: 1px solid rgba(0,0,0,0.15);
+        border-radius: 4px;
+        color: #222;
+        font-size: 0.88rem;
+        outline: none;
+        cursor: pointer;
+      }
+      .ck-name-row input { flex: 1; }
+      .ck-input {
+        width: 100%;
+        padding: 9px 12px;
+        background: #f8f8f8;
+        border: 1px solid rgba(0,0,0,0.15);
+        border-radius: 4px;
+        color: #222;
+        font-size: 0.88rem;
+        outline: none;
+        box-sizing: border-box;
+        font-family: inherit;
+        transition: border-color 0.2s;
+      }
+      .ck-input:focus { border-color: #b45f3c; }
+      .ck-email-note {
+        font-size: 0.72rem;
+        color: #888;
+        margin-top: 5px;
+        line-height: 1.5;
+      }
+
+      /* Booking summary card (right) */
+      .ck-sum-card {
+        background: #ffffff;
+        border: 1px solid rgba(180,95,60,0.15);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      }
+      .ck-sum-header {
+        background: linear-gradient(135deg, #b45f3c 0%, #9a4f32 100%);
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 800;
+        padding: 10px 16px;
+        letter-spacing: 0.04em;
+      }
+      .ck-sum-body { padding: 16px; }
+      .ck-dates-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      .ck-date-col { text-align: center; flex: 1; }
+      .ck-date-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+      }
+      .ck-date-val {
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: #222;
+      }
+      .ck-date-time {
+        font-size: 0.72rem;
+        color: #888;
+        margin-top: 2px;
+      }
+      .ck-date-arrow {
+        background: #b45f3c;
+        color: #fff;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 900;
+        flex-shrink: 0;
+      }
+      .ck-sum-modify {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b45f3c;
+        color: #b45f3c;
+        padding: 7px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-bottom: 14px;
+        transition: background 0.2s, color 0.2s;
+      }
+      .ck-sum-modify:hover { background: #b45f3c; color: #fff; }
+      .ck-sum-room {
+        background: #f5f5f5;
+        border: 1px solid rgba(180,95,60,0.12);
+        border-radius: 6px;
+        padding: 10px 12px;
+      }
+      .ck-sum-room-name {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: #222;
+        margin-bottom: 6px;
+      }
+      .ck-sum-room-detail {
+        font-size: 0.72rem;
+        color: #666;
+        margin: 2px 0;
+      }
+      .ck-sum-room-price {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: #b45f3c;
+        margin-top: 8px;
+      }
+
+      /* Verify Booking tables */
+      .ck-verify-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.76rem;
+        margin-bottom: 16px;
+      }
+      .ck-verify-table th {
+        background: #b45f3c;
+        color: #fff;
+        padding: 8px 10px;
+        text-align: center;
+        font-weight: 700;
+        border: 1px solid #9a4f32;
+        white-space: nowrap;
+      }
+      .ck-verify-table td {
+        background: #f9f9f9;
+        color: #333;
+        padding: 8px 10px;
+        text-align: center;
+        border: 1px solid rgba(0,0,0,0.08);
+      }
+      .ck-verify-table tr.subtotal td {
+        background: rgba(180,95,60,0.08);
+        color: #b45f3c;
+        font-weight: 700;
+      }
+      .ck-verify-table td.room-label {
+        text-align: left;
+        font-weight: 700;
+        color: #222;
+        background: #eee;
+        padding-left: 14px;
+      }
+      .ck-total-line {
+        text-align: right;
+        font-size: 0.82rem;
+        color: #666;
+        margin: 4px 0;
+      }
+      .ck-total-line.grand {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #222;
+        margin-top: 8px;
+      }
+
+      /* Payment section */
+      .ck-pay-note {
+        font-size: 0.82rem;
+        color: #555;
+        margin-bottom: 14px;
+      }
+      .ck-pay-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 18px;
+        border-bottom: 2px solid rgba(0,0,0,0.1);
+      }
+      .ck-pay-tab {
+        padding: 8px 18px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #888;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        transition: color 0.2s;
+      }
+      .ck-pay-tab.active {
+        color: #b45f3c;
+        border-bottom-color: #b45f3c;
+      }
+      .ck-pay-info {
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 14px;
+      }
+      .ck-pay-select {
+        width: 100%;
+        max-width: 320px;
+        padding: 9px 12px;
+        background: #f8f8f8;
+        border: 1px solid rgba(0,0,0,0.15);
+        border-radius: 4px;
+        color: #222;
+        font-size: 0.88rem;
+        outline: none;
+        margin-bottom: 20px;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .ck-pay-select option { background: #ffffff; color: #222; }
+      .ck-book-now-row {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .ck-book-now {
+        background: linear-gradient(135deg, #b45f3c 0%, #9a4f32 100%);
+        color: #fff;
+        border: none;
+        padding: 12px 40px;
+        font-size: 0.95rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: opacity 0.2s, transform 0.15s;
+        box-shadow: 0 4px 12px rgba(180,95,60,0.4);
+      }
+      .ck-book-now:hover { opacity: 0.9; transform: translateY(-1px); }
+
+      .bk-msg { margin-top: 14px; text-align: center; font-size: 0.85rem; padding: 10px 14px; border-radius: 6px; }
+      .bk-msg.success { background: #155724; color: #d4edda; border: 1px solid #1e7e34; }
+      .bk-msg.error   { background: #721c24; color: #f8d7da; border: 1px solid #a71d2a; }
+
+      @media (max-width: 900px) {
+        .bk-layout { flex-direction: column; }
+        .bk-sidebar { position: static; width: 100%; flex: none; }
+        .ck-cols { flex-direction: column; }
+        .ck-right { position: static; width: 100%; flex: none; }
+      }
+      @media (max-width: 700px) {
+        .bk-room-body { flex-direction: column; }
+        .bk-room-img-wrap { flex: 0 0 auto; }
+      }
+    </style>
   </head>
   <body class="booking-page">
-    <header class="site-header" id="siteHeader">
-      <a class="brand" href="./index.html" aria-label="Cloud Nandy home">
-        <span class="brand-mark">C</span>
-        <span>Cloud Nandy</span>
-      </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="./index.html"           class="nav-link">Home</a>
-        <a href="./index.html#rooms"     class="nav-link">Rooms</a>
-        <a href="./booking.html"         class="nav-link">Book</a>
-        <a href="./index.html#amenities" class="nav-link">Amenities</a>
-        <a href="./index.html#contact"   class="nav-link">Contact Us</a>
-        <a href="./admin.html"           class="nav-admin-btn">Admin Login</a>
-      </nav>
-    </header>
 
-    <main>
-      <section class="booking-hero" data-reveal>
-        <div data-reveal data-delay="1">
-          <p class="eyebrow">Secure direct booking</p>
-          <h1>Reserve your stay</h1>
-          <p>
-            Choose your dates, select a room, and confirm your details with a
-            clear live price summary.
-          </p>
+    <!-- Terracotta Property Banner with Back Button -->
+    <div class="property-banner">
+      <div class="banner-header-wrap">
+        <a href="./index.html" class="bk-back-btn" aria-label="Back to website">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Back</span>
+        </a>
+        <h1>Cloud Nandy Hills</h1>
+      </div>
+      <p class="address">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        No.5/166, Kochakanal Street, Poombarai, Kodaikanal-624103
+      </p>
+    </div>
+
+    <div class="bk-container">
+
+      <!-- Availability Bar -->
+      <div class="bk-avail">
+        <h2>Availability</h2>
+        <div class="bk-avail-controls">
+          <select id="checkIn_hotel" class="avail-input">
+            <option>Cloud Nandy Hills</option>
+          </select>
+          <input type="date" id="checkIn" />
+          <input type="date" id="checkOut" />
+          <input type="number" id="roomsCount" value="1" min="1" max="10" />
+          <button class="bk-avail-btn" id="checkAvailBtn">Check Availability</button>
         </div>
-      </section>
+      </div>
 
-      <section class="section booking-section booking-page-section">
-        <div class="booking-copy" data-reveal>
-          <p class="eyebrow">Cloud Nandy</p>
-          <h2>Booking details</h2>
-          <p>
-            Your selected room and dates are calculated instantly. Uploaded
-            admin properties will also appear in the room list.
-          </p>
-        </div>
+      <!-- Two-Column Layout: Room List + Sidebar -->
+      <div class="bk-layout">
 
-        <div class="booking-flow">
-          <div class="booking-property-panel" data-reveal data-delay="1">
-            <div class="section-heading compact">
-              <p class="eyebrow">Select property</p>
-              <h2>Available stays</h2>
-            </div>
-            <div id="bookingPropertyGrid" class="booking-property-grid" aria-live="polite"></div>
+        <!-- Room List -->
+        <div class="bk-main-col">
+          <div id="bkRoomList">
+            <p class="bk-loading">Loading available rooms...</p>
           </div>
-
-          <form id="bookingForm" class="booking-form" data-reveal data-delay="2">
-            <div class="form-row">
-              <label>
-                Full name
-                <input id="guestName" name="guestName" type="text" placeholder="Your name" required />
-              </label>
-              <label>
-                Email
-                <input id="guestEmail" name="guestEmail" type="email" placeholder="you@example.com" required />
-              </label>
-            </div>
-
-            <div class="form-row">
-              <label>
-                Check-in
-                <input id="checkIn" name="checkIn" type="date" required />
-              </label>
-              <label>
-                Check-out
-                <input id="checkOut" name="checkOut" type="date" required />
-              </label>
-            </div>
-
-            <div class="form-row">
-              <label>
-                Room type
-                <select id="roomType" name="roomType" required>
-                  <option value="">Loading Supabase properties...</option>
-                </select>
-              </label>
-              <label>
-                Guests
-                <select id="guests" name="guests" required>
-                  <option value="1">1 guest</option>
-                  <option value="2" selected>2 guests</option>
-                  <option value="3">3 guests</option>
-                  <option value="4">4 guests</option>
-                </select>
-              </label>
-            </div>
-
-            <label>
-              Special requests
-              <textarea
-                id="requests"
-                name="requests"
-                rows="4"
-                placeholder="Arrival time, room preferences, accessibility needs..."
-              ></textarea>
-            </label>
-
-            <div class="booking-summary" aria-live="polite">
-              <div>
-                <span>Nights</span>
-                <strong id="summaryNights">1</strong>
-              </div>
-              <div>
-                <span>Estimated total</span>
-              <strong id="summaryTotal">&#8377;0</strong>
-              </div>
-            </div>
-
-            <p id="formMessage" class="form-message" role="status"></p>
-            <button class="button primary full" type="submit">Confirm Booking</button>
-          </form>
         </div>
-      </section>
-    </main>
 
-    <footer class="site-footer">
-      <div>
-        <strong>Cloud Nandy Hills</strong>
-        <p>No.5/166, Kochakanal Street, Poombarai, Kodaikanal, Tamil Nadu 624103</p>
-      </div>
-      <div class="footer-links">
-        <a href="./index.html">Back to Website</a>
-        <a href="tel:+919095744759">090957 44759</a>
-      </div>
-    </footer>
+        <!-- Booking Summary Sidebar -->
+        <div class="bk-sidebar" id="bkSidebar">
+          <div class="bk-sb-header">Booking Summary</div>
+          <div class="bk-sb-body" id="bkSidebarBody">
+            <!-- filled by JS -->
+          </div>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./supabase-config.js?v=3"></script>
-    <script src="./booking.js?v=3"></script>
-    <script src="./animations.js?v=3"></script>
-    <script src="./lightbox.js?v=3"></script>
+      </div>
+
+    </div>
+
+    <!-- Checkout Full-Page Overlay -->
+    <div id="bkOverlay" class="bk-overlay">
+
+      <!-- Top Bar -->
+      <div class="ck-topbar">
+        <span class="ck-topbar-title">Complete Your Booking &mdash; Cloud Nandy Hills</span>
+        <button class="ck-close" id="bkCloseModal" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="ck-wrap">
+        <form id="bkForm">
+          <input type="hidden" id="bkRoom" />
+          <input type="hidden" id="bkCheckIn" />
+          <input type="hidden" id="bkCheckOut" />
+          <input type="hidden" id="bkAdults" />
+          <input type="hidden" id="bkChildren" />
+
+          <div class="ck-cols">
+
+            <!-- LEFT COLUMN -->
+            <div class="ck-left">
+
+              <!-- Guest Information -->
+              <div class="ck-section">
+                <div class="ck-section-header">Guest Information</div>
+                <div class="ck-section-body">
+                  <div class="ck-form-group">
+                    <label>Guest Name <span class="req">*</span></label>
+                    <div class="ck-name-row">
+                      <select id="bkTitle" class="ck-input" style="flex:0 0 72px;width:72px;">
+                        <option>Mr</option>
+                        <option>Mrs</option>
+                        <option>Ms</option>
+                        <option>Dr</option>
+                      </select>
+                      <input type="text" id="bkName" class="ck-input" required placeholder="Full name" />
+                    </div>
+                  </div>
+                  <div class="ck-form-group">
+                    <label>Mobile <span class="req">*</span></label>
+                    <input type="tel" id="bkPhone" class="ck-input" required placeholder="+91 XXXXX XXXXX" />
+                  </div>
+                  <div class="ck-form-group">
+                    <label>Email <span class="req">*</span></label>
+                    <input type="email" id="bkEmail" class="ck-input" required placeholder="your@email.com" />
+                    <p class="ck-email-note">We will send your booking confirmation (including the hotel's contact information) to this email. Please ensure your email is entered correctly.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Optional Details -->
+              <div class="ck-section">
+                <div class="ck-section-header">Optional Details</div>
+                <div class="ck-section-body">
+                  <div class="ck-form-group">
+                    <label>Special Instructions</label>
+                    <textarea id="bkRequests" class="ck-input" rows="3" placeholder="Any special notes or requests..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Verify Booking Information -->
+              <div class="ck-section">
+                <div class="ck-section-header">Verify Booking Information</div>
+                <div class="ck-section-body">
+
+                  <!-- Overview table -->
+                  <div style="overflow-x:auto;margin-bottom:18px;">
+                    <table class="ck-verify-table" id="ckOverviewTable">
+                      <thead>
+                        <tr>
+                          <th>Arrival Date</th>
+                          <th>Departure Date</th>
+                          <th>No. of Rooms</th>
+                          <th>No. of Plans</th>
+                          <th>No. of Nights</th>
+                          <th>Adults</th>
+                          <th>Childs</th>
+                          <th>Extra Persons</th>
+                        </tr>
+                      </thead>
+                      <tbody id="ckOverviewBody"></tbody>
+                    </table>
+                  </div>
+
+                  <!-- Rate breakdown table -->
+                  <div style="overflow-x:auto;">
+                    <table class="ck-verify-table" id="ckRateTable">
+                      <thead>
+                        <tr>
+                          <th>S.no</th>
+                          <th>Adult(s)</th>
+                          <th>Child(s)</th>
+                          <th>Extra Pax</th>
+                          <th>Room Rate</th>
+                          <th>Extra Pax Rate</th>
+                          <th>Child Pax Rate</th>
+                          <th>Tax</th>
+                          <th>Total <small style="font-weight:normal">(no.of nights &times; rates)</small></th>
+                        </tr>
+                      </thead>
+                      <tbody id="ckRateBody"></tbody>
+                    </table>
+                  </div>
+
+                  <div style="margin-top:12px;">
+                    <div class="ck-total-line" id="ckRoundoffLine"></div>
+                    <div class="ck-total-line grand" id="ckGrandTotal"></div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Payment -->
+              <div class="ck-section">
+                <div class="ck-section-header">Payment</div>
+                <div class="ck-section-body">
+                  <p class="ck-pay-note">Choose the Online (or) Offline Payment method that works Best for you.</p>
+                  <div class="ck-pay-tabs">
+                    <div class="ck-pay-tab active">Pay at Online</div>
+                  </div>
+                  <p class="ck-pay-info">Select any payment gateway and click Book Now button to fully pay your booking amount and confirm your booking .</p>
+                  <select class="ck-pay-select">
+                    <option value="">Select Payment Method</option>
+                    <option value="ccavenue">ccAvenue</option>
+                  </select>
+                  <div class="ck-book-now-row">
+                    <button type="submit" class="ck-book-now">Book Now</button>
+                  </div>
+                  <p id="bkFormMsg" class="bk-msg" style="display:none;"></p>
+                </div>
+              </div>
+
+            </div><!-- /ck-left -->
+
+            <!-- RIGHT COLUMN: Booking Summary Card -->
+            <div class="ck-right">
+              <div class="ck-sum-card">
+                <div class="ck-sum-header">Booking Summary</div>
+                <div class="ck-sum-body">
+                  <div class="ck-dates-row">
+                    <div class="ck-date-col">
+                      <div class="ck-date-label">Check-In</div>
+                      <div class="ck-date-val" id="ckCinVal">--</div>
+                      <div class="ck-date-time">12:00 noon</div>
+                    </div>
+                    <div class="ck-date-arrow">&#8594;</div>
+                    <div class="ck-date-col">
+                      <div class="ck-date-label">Check-out</div>
+                      <div class="ck-date-val" id="ckCoutVal">--</div>
+                      <div class="ck-date-time">12:00 noon</div>
+                    </div>
+                  </div>
+                  <button class="ck-sum-modify" id="ckModifyBtn" type="button">Modify</button>
+                  <div class="ck-sum-room">
+                    <div class="ck-sum-room-name" id="ckSumRoomName">--</div>
+                    <div class="ck-sum-room-detail" id="ckSumRoomDetail">--</div>
+                    <div class="ck-sum-room-price" id="ckSumRoomPrice">--</div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /ck-right -->
+
+          </div><!-- /ck-cols -->
+        </form>
+      </div><!-- /ck-wrap -->
+    </div><!-- /bkOverlay -->
+
+    <!-- Scripts: Supabase CDN loaded in <head>, config after -->
+    <script src="./supabase-config.js?v=5"></script>
+    <script src="./animations.js?v=5"></script>
+    <script src="./lightbox.js?v=5"></script>
+    <script src="./booking2.js?v=5"></script>
     <script>
-      const header = document.getElementById("siteHeader");
-      window.addEventListener("scroll", () => {
-        header.classList.toggle("scrolled", window.scrollY > 60);
-      }, { passive: true });
+      const _hdr = document.getElementById("siteHeader");
+      if (_hdr) {
+        window.addEventListener("scroll", () => {
+          _hdr.classList.toggle("scrolled", window.scrollY > 60);
+        }, { passive: true });
+      }
     </script>
   </body>
 </html>

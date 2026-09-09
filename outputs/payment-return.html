@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Payment Status | Cloud Nandy Hills</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #f0ede8;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .pr-banner {
+        width: 100%; max-width: 560px;
+        background: #b45f3c;
+        border-radius: 16px 16px 0 0;
+        padding: 18px 28px;
+      }
+      .pr-banner-logo { font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+      .pr-banner-logo span { opacity: 0.75; font-weight: 400; font-size: 0.9rem; display: block; }
+      .pr-card {
+        width: 100%; max-width: 560px;
+        background: #fff;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+        overflow: hidden;
+        animation: slideUp 0.4s ease both;
+      }
+      @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+      .pr-icon-wrap { padding: 44px 28px 28px; display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center; }
+      .pr-circle {
+        width:80px; height:80px; border-radius:50%;
+        display:flex; align-items:center; justify-content:center;
+        font-size:2.2rem;
+        animation: popIn 0.5s 0.2s ease both;
+      }
+      @keyframes popIn { 0%{transform:scale(0.4);opacity:0;} 70%{transform:scale(1.12);} 100%{transform:scale(1);opacity:1;} }
+      .pr-circle.success  { background:#e8f8f0; color:#22a060; }
+      .pr-circle.failed   { background:#fde8e8; color:#e03d3d; }
+      .pr-circle.cancelled{ background:#fff3e0; color:#e07c0a; }
+      .pr-circle.error    { background:#f0f0f0; color:#888; }
+      .pr-title   { font-size:1.6rem; font-weight:800; color:#1a1a1a; }
+      .pr-subtitle{ font-size:0.95rem; color:#666; line-height:1.5; max-width:380px; }
+      .pr-details { margin:0 28px; border:1px solid #eee; border-radius:10px; overflow:hidden; }
+      .pr-detail-row { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; font-size:0.88rem; border-bottom:1px solid #f2f2f2; }
+      .pr-detail-row:last-child { border-bottom:none; }
+      .pr-detail-label{ color:#888; font-weight:500; }
+      .pr-detail-value{ color:#1a1a1a; font-weight:600; text-align:right; }
+      .pr-detail-value.green { color:#22a060; }
+      .pr-detail-value.red   { color:#e03d3d; }
+      .pr-detail-value.orange{ color:#e07c0a; }
+      .pr-guest { margin:16px 28px 0; padding:14px 16px; background:#faf8f6; border-radius:10px; font-size:0.88rem; color:#555; }
+      .pr-guest strong { color:#1a1a1a; display:block; font-size:1rem; margin-bottom:4px; }
+      .pr-actions { display:flex; gap:12px; padding:28px; flex-wrap:wrap; }
+      .pr-btn {
+        flex:1; min-width:120px; padding:13px 20px; border-radius:8px; border:none;
+        font-size:0.9rem; font-weight:700; cursor:pointer; text-decoration:none;
+        text-align:center; transition:transform 0.15s ease, box-shadow 0.15s ease;
+        display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      }
+      .pr-btn:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(0,0,0,0.15); }
+      .pr-btn-primary   { background:#b45f3c; color:#fff; }
+      .pr-btn-secondary { background:#f2ede8; color:#b45f3c; }
+      .pr-note {
+        margin:16px 28px 0; padding:12px 14px;
+        background:#fff8f0; border-left:3px solid #b45f3c;
+        border-radius:0 6px 6px 0; font-size:0.82rem; color:#7a4a2c; line-height:1.5;
+      }
+      .pr-spinner { width:36px; height:36px; border:3px solid #f0ede8; border-top-color:#b45f3c; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 14px; }
+      @keyframes spin { to { transform:rotate(360deg); } }
+      .pr-loading { padding:60px 28px; text-align:center; color:#aaa; font-size:0.95rem; }
+    </style>
+  </head>
+  <body>
+    <div class="pr-banner">
+      <div class="pr-banner-logo">&#9729; Cloud Nandy Hills<span>Poombarai, Kodaikanal</span></div>
+    </div>
+    <div class="pr-card" id="prCard">
+      <div class="pr-loading"><div class="pr-spinner"></div>Processing your payment status&hellip;</div>
+    </div>
+    <script>
+    (function () {
+      const card     = document.getElementById('prCard');
+      const params   = new URLSearchParams(window.location.search);
+      const status   = (params.get('status') || '').toLowerCase();
+      const orderId  = params.get('order_id') || '';
+      const amount   = params.get('amount')   || '';
+      const tracking = params.get('tracking') || '';
+
+      const saved = (() => {
+        try { return JSON.parse(localStorage.getItem('cloudNandyLatestBooking') || '{}'); }
+        catch { return {}; }
+      })();
+
+      const fmt = v => v ? '\u20b9' + Number(v).toLocaleString('en-IN', { minimumFractionDigits: 2 }) : '\u2014';
+      const shortId = orderId ? '#CNH-' + orderId.replace(/-/g,'').substring(0,8).toUpperCase() : '\u2014';
+
+      const states = {
+        success:   { icon:'\u2713', cls:'success',  title:'Booking Confirmed!',      subtitle:'Your payment was successful and your booking is confirmed. Our team will contact you with arrival details.', statusVal:'SUCCESS',   statusCls:'green' },
+        confirmed: { icon:'\u2713', cls:'success',  title:'Booking Confirmed!',      subtitle:'Your payment was successful. We look forward to hosting you!', statusVal:'SUCCESS', statusCls:'green' },
+        cancelled: { icon:'\u2715', cls:'cancelled',title:'Payment Cancelled',       subtitle:'You cancelled the payment. Your booking has not been confirmed. You can try again anytime.', statusVal:'CANCELLED', statusCls:'orange' },
+        failed:    { icon:'\u2715', cls:'failed',   title:'Payment Failed',          subtitle:'Your payment could not be processed. Please try again or contact us directly.', statusVal:'FAILED',    statusCls:'red' },
+        error:     { icon:'!',     cls:'error',    title:'Something Went Wrong',    subtitle:'We could not verify your payment. Please contact us with your booking reference.', statusVal:'UNKNOWN',   statusCls:'' },
+      };
+
+      const cfg = states[status] || states.error;
+      const isSuccess = status === 'success' || status === 'confirmed';
+
+      const guestHtml = saved.name ? `
+        <div class="pr-guest">
+          <strong>${saved.name}</strong>
+          ${saved.phone ? '&#128222; ' + saved.phone : ''}
+          ${saved.email ? ' &nbsp;|&nbsp; &#9993; ' + saved.email : ''}
+        </div>` : '';
+
+      const detailRows = [
+        { label:'Booking Reference', value: shortId },
+        { label:'Payment Status',    value: cfg.statusVal, cls: cfg.statusCls },
+        amount   ? { label:'Amount Paid',  value: fmt(amount) } : null,
+        tracking ? { label:'Tracking ID',  value: tracking }    : null,
+        saved.room      ? { label:'Room',  value: saved.room }  : null,
+        (saved.check_in && saved.check_out) ? {
+          label:'Dates',
+          value: saved.check_in.split('-').reverse().join('-') + ' \u2192 ' + saved.check_out.split('-').reverse().join('-')
+        } : null,
+      ].filter(Boolean);
+
+      const detailsHtml = detailRows.map(r => `
+        <div class="pr-detail-row">
+          <span class="pr-detail-label">${r.label}</span>
+          <span class="pr-detail-value ${r.cls || ''}">${r.value}</span>
+        </div>`).join('');
+
+      card.innerHTML = `
+        <div class="pr-icon-wrap">
+          <div class="pr-circle ${cfg.cls}">${cfg.icon}</div>
+          <div class="pr-title">${cfg.title}</div>
+          <p class="pr-subtitle">${cfg.subtitle}</p>
+        </div>
+        ${guestHtml}
+        <div class="pr-details" style="margin-top:${guestHtml ? '16px' : '0'}">${detailsHtml}</div>
+        <div class="pr-note" style="margin-top:16px;">
+          ${isSuccess
+            ? '&#128203; Our team will reach out to you on <strong>' + (saved.phone || 'your registered number') + '</strong> to confirm arrival details.'
+            : 'Need help? Call us or email <strong>stay@cloudnandyhills.com</strong> and we will sort it out.'}
+        </div>
+        <div class="pr-actions">
+          ${isSuccess
+            ? '<a href="./index.html" class="pr-btn pr-btn-secondary">&#127968; Back to Home</a><a href="./booking.html" class="pr-btn pr-btn-primary">&#128197; Book Another</a>'
+            : '<a href="./booking.html" class="pr-btn pr-btn-primary">&#8617; Try Again</a><a href="./index.html" class="pr-btn pr-btn-secondary">&#127968; Back to Home</a>'}
+        </div>`;
+
+      if (isSuccess) localStorage.removeItem('cloudNandyLatestBooking');
+    })();
+    </script>
+  </body>
+</html>

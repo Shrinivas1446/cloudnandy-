@@ -7,6 +7,10 @@
 node_modules/
 dist/
 
+# Environment secrets — NEVER commit these
+.env
+server/.env
+
 # Compiled Java class files
 *.class
 

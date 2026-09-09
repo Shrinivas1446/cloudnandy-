@@ -9,10 +9,25 @@ services:
       - key: SUPABASE_URL
         value: https://wyjkehxbybkakgxdnoje.supabase.co
       - key: SUPABASE_SERVICE_KEY
-        sync: false          # You will paste this in the Render dashboard
+        sync: false
       - key: SUPABASE_BUCKET
         value: property-images
       - key: SUPABASE_TABLE
         value: properties
       - key: ALLOWED_ORIGIN
-        value: "*"           # Tighten to your frontend URL after first deploy
+        value: "*"
+      - key: CCAVENUE_MERCHANT_ID
+        value: "4450815"
+      - key: CCAVENUE_ACCESS_CODE
+        sync: false
+      - key: CCAVENUE_WORKING_KEY
+        sync: false
+      - key: CCAVENUE_URL
+        value: https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction
+      # After Render deploys, it gives you a URL like https://cloud-nandy-api.onrender.com
+      # Set BACKEND_URL to that URL in Render dashboard → Environment
+      # Also register that URL in your CCAvenue merchant account
+      - key: BACKEND_URL
+        value: https://cloud-nandy-api.onrender.com
+      - key: FRONTEND_URL
+        value: https://mnccoimbatore.in

@@ -134,15 +134,7 @@ const setupWidgetForm = (property) => {
 
   widgetBookingForm.addEventListener("submit", (event) => {
     event.preventDefault();
-
-    // Redirect to booking.html with prefilled params
-    const searchParams = new URLSearchParams();
-    searchParams.set("room", property.name);
-    searchParams.set("checkIn", widgetCheckIn.value);
-    searchParams.set("checkOut", widgetCheckOut.value);
-    searchParams.set("guests", widgetGuests.value);
-
-    window.location.href = `./booking.html?${searchParams.toString()}`;
+    window.location.href = "./booking.html";
   });
 };
 

@@ -5,8 +5,12 @@ window.CLOUD_NANDY_SUPABASE = {
   table: "properties",
 };
 
-// Initialize the Supabase client globally for the frontend
-window.supabaseClient = window.supabase.createClient(
-  window.CLOUD_NANDY_SUPABASE.url,
-  window.CLOUD_NANDY_SUPABASE.key
-);
+// ── Backend API URL ──────────────────────────────────────────────────────────
+window.CLOUD_NANDY_API_URL = "https://app-cook-themselves-gave.trycloudflare.com";
+
+if (window.supabase) {
+  window.supabaseClient = window.supabase.createClient(
+    window.CLOUD_NANDY_SUPABASE.url,
+    window.CLOUD_NANDY_SUPABASE.key
+  );
+}

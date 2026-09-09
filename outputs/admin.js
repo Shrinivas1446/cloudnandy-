@@ -186,6 +186,8 @@ const showDashboard = () => {
   loginPanel.hidden = true;
   dashboardPanel.hidden = false;
   renderUploadedProperties();
+  // Load bookings count immediately so the overview badge is populated
+  if (window.loadAdminBookings) window.loadAdminBookings();
 };
 
 const showLogin = () => {
@@ -247,13 +249,13 @@ const renderUploadedProperties = async () => {
   propertyList.innerHTML = properties
     .map(
       (p, i) => `
-        <article class="property-item" data-reveal data-delay="${Math.min(i, 5)}" data-property-id="${escapeHtml(p.id)}">
+        <article class="property-item" data-property-id="${escapeHtml(p.id)}">
           <img src="${p.image_url || p.image || "https://placehold.co/400x300?text=No+Image"}" alt="${escapeHtml(p.name)}" />
           <div>
             <h4>${escapeHtml(p.name)}</h4>
             <p>${escapeHtml(p.type)}</p>
             <p>${escapeHtml(p.description)}</p>
-            <p>${p.image_urls.length} image(s)</p>
+            <p>${(p.image_urls || []).length} image(s)</p>
             <span class="property-price">${formatRupees(p.price)}/night</span>
             <div class="property-actions">
               <button class="text-button" type="button" data-edit-property="${escapeHtml(p.id)}">Edit</button>

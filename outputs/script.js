@@ -79,12 +79,10 @@ const defaultCheckOut = addDays(today, 2);
   input.value = dateToInputValue(defaultCheckOut);
 });
 
+const SKYROOMS_BOOKING_URL = "./booking.html";
+
 const buildBookingUrl = (params = {}) => {
-  const url = new URL("./booking.html", window.location.href);
-  Object.entries(params).forEach(([key, value]) => {
-    if (value) url.searchParams.set(key, value);
-  });
-  return url.toString();
+  return SKYROOMS_BOOKING_URL;
 };
 
 const renderPublicUploadedProperties = async () => {
@@ -128,7 +126,7 @@ const renderPublicUploadedProperties = async () => {
                   <button class="text-button" type="button" data-room-select="${escapeHtml(
           property.name,
         )}">
-                    Select
+                    Book
                   </button>
                 </div>
               </div>
@@ -269,18 +267,14 @@ quickCheckIn.addEventListener("change", () => {
 
 quickBookingForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  window.location.href = buildBookingUrl({
-    checkIn: quickCheckIn.value,
-    checkOut: quickCheckOut.value,
-    guests: quickGuests.value,
-  });
+  window.location.href = SKYROOMS_BOOKING_URL;
 });
 
 roomGrid.addEventListener("click", (event) => {
   const button = event.target.closest("[data-room-select]");
 
   if (button) {
-    window.location.href = buildBookingUrl({ room: button.dataset.roomSelect });
+    window.location.href = SKYROOMS_BOOKING_URL;
   }
 });
 
