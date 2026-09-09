@@ -115,7 +115,7 @@ const renderBookingProperties = (properties) => {
             <strong>${formatRupees(property.price)}/night</strong>
             <button class="text-button" type="button" data-property-select="${escapeHtml(
               property.name,
-            )}">Select</button>
+            )}">Book</button>
           </div>
         </article>
       `,

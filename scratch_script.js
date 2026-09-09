@@ -113,7 +113,7 @@ const renderPublicUploadedProperties = async () => {
                   <button class="text-button" type="button" data-room-select="${escapeHtml(
           property.name,
         )}">
-                    Select
+                    Book
                   </button>
                 </div>
               </div>
