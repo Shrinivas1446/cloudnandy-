@@ -6,7 +6,7 @@ window.CLOUD_NANDY_SUPABASE = {
 };
 
 // ── Backend API URL ──────────────────────────────────────────────────────────
-window.CLOUD_NANDY_API_URL = "https://app-cook-themselves-gave.trycloudflare.com";
+window.CLOUD_NANDY_API_URL = "https://cloud-nandy-api.onrender.com";
 
 if (window.supabase) {
   window.supabaseClient = window.supabase.createClient(
