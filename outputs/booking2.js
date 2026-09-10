@@ -490,12 +490,10 @@
     msg.style.display = "none";
 
     // ── API base URL ───────────────────────────────────────────────────────
-    // CLOUD_NANDY_API_URL is set in supabase-config.js for the live site.
-    // Falls back to localhost:3000 for local dev.
-    const apiBase = (window.CLOUD_NANDY_API_URL) ? window.CLOUD_NANDY_API_URL
-      : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+    const apiBase = window.CLOUD_NANDY_API_URL
+      || (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
         ? "http://localhost:3000"
-        : "";
+        : "https://cloud-nandy-api.onrender.com");
 
     // Save booking details for the payment-return page to display
     localStorage.setItem("cloudNandyLatestBooking", JSON.stringify({
