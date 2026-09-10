@@ -4,7 +4,7 @@ services:
     runtime: node
     rootDir: server
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node server.js
     envVars:
       - key: SUPABASE_URL
         value: https://wyjkehxbybkakgxdnoje.supabase.co
@@ -24,9 +24,6 @@ services:
         sync: false
       - key: CCAVENUE_URL
         value: https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction
-      # After Render deploys, it gives you a URL like https://cloud-nandy-api.onrender.com
-      # Set BACKEND_URL to that URL in Render dashboard → Environment
-      # Also register that URL in your CCAvenue merchant account
       - key: BACKEND_URL
         value: https://cloud-nandy-api.onrender.com
       - key: FRONTEND_URL
