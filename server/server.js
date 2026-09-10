@@ -12,7 +12,6 @@ const {
   SUPABASE_SERVICE_KEY,
   SUPABASE_BUCKET = "property-images",
   SUPABASE_TABLE = "properties",
-  PORT = 3000,
   ALLOWED_ORIGIN = "*",
   CCAVENUE_MERCHANT_ID,
   CCAVENUE_ACCESS_CODE,
@@ -21,6 +20,16 @@ const {
   BACKEND_URL,
   FRONTEND_URL,
 } = process.env;
+
+// PORT must come directly from process.env — Render injects its own PORT value
+const PORT = process.env.PORT || 3000;
+
+console.log("🚀 Starting Cloud Nandy API...");
+console.log("   PORT          :", PORT);
+console.log("   NODE_ENV      :", process.env.NODE_ENV);
+console.log("   SUPABASE_URL  :", SUPABASE_URL ? "✅ set" : "❌ MISSING");
+console.log("   SERVICE_KEY   :", SUPABASE_SERVICE_KEY ? "✅ set" : "❌ MISSING");
+console.log("   CCA_MERCHANT  :", CCAVENUE_MERCHANT_ID ? "✅ set" : "❌ MISSING");
 
 // Provide safe defaults AFTER reading from env (never overwrite a real value)
 const CCA_GATEWAY_URL = CCAVENUE_URL || "https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction";
