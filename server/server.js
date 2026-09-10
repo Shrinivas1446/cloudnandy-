@@ -567,4 +567,29 @@ app.use((err, _req, res, _next) => {
 
 app.listen(PORT, () => {
   console.log(`✅  Cloud Nandy API running on port ${PORT}`);
+
+  // ── Keep-alive ping (Render free tier spins down after 15 min of inactivity) ─
+  // Ping our own health endpoint every 14 minutes to stay awake.
+  const SELF_URL = (API_BASE_URL || "").replace(/\/$/, "");
+  if (SELF_URL && !SELF_URL.includes("localhost")) {
+    const https = require("https");
+    const http  = require("http");
+    const ping  = () => {
+      const url  = `${SELF_URL}/api/health`;
+      const lib  = url.startsWith("https") ? https : http;
+      const req  = lib.get(url, (res) => {
+        console.log(`💓 Keep-alive ping → ${url} [${res.statusCode}]`);
+      });
+      req.on("error", (err) => {
+        console.warn("Keep-alive ping failed:", err.message);
+      });
+      req.end();
+    };
+    // First ping after 1 minute, then every 14 minutes
+    setTimeout(() => {
+      ping();
+      setInterval(ping, 14 * 60 * 1000);
+    }, 60 * 1000);
+    console.log(`💓 Keep-alive enabled → pinging ${SELF_URL}/api/health every 14 min`);
+  }
 });
