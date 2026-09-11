@@ -490,10 +490,7 @@
     msg.style.display = "none";
 
     // ── API base URL ───────────────────────────────────────────────────────
-    const apiBase = window.CLOUD_NANDY_API_URL
-      || (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:3000"
-        : "https://cloud-nandy-api.onrender.com");
+    const apiBase = "https://cloudnandy-1cvn.onrender.com";
 
     // Save booking details for the payment-return page to display
     localStorage.setItem("cloudNandyLatestBooking", JSON.stringify({
