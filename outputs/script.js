@@ -281,10 +281,29 @@ roomGrid.addEventListener("click", (event) => {
 renderPublicUploadedProperties();
 loadKodaikanalWeather();
 
-// ── Header scroll shrink ───────────────────────────────
+// ── Header scroll: hide on scroll-down, show on scroll-up ──
 const header = document.getElementById("siteHeader");
+let lastScrollY = window.scrollY;
+const scrollThreshold = 5; // ignore tiny scroll movements
+
 window.addEventListener("scroll", () => {
-  header.classList.toggle("scrolled", window.scrollY > 60);
+  const currentScrollY = window.scrollY;
+
+  // Add/remove the "scrolled" shrink class
+  header.classList.toggle("scrolled", currentScrollY > 60);
+
+  // Determine scroll direction and hide/show
+  if (Math.abs(currentScrollY - lastScrollY) < scrollThreshold) return;
+
+  if (currentScrollY > lastScrollY && currentScrollY > 80) {
+    // Scrolling DOWN — hide the header
+    header.classList.add("header-hidden");
+  } else {
+    // Scrolling UP — show the header
+    header.classList.remove("header-hidden");
+  }
+
+  lastScrollY = currentScrollY;
 }, { passive: true });
 
 // ── Room card stagger reveal (called after cards render) ──

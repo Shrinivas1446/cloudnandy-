@@ -504,22 +504,48 @@
     }));
 
     try {
-      const resp = await fetch(apiBase + "/api/payment/initiate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          room: cart.name,
-          check_in: ci.value,
-          check_out: co.value,
-          adults: cart.adults,
-          children: cart.children,
-          requests,
-          total_amount: total,
-        }),
+      const payloadBody = JSON.stringify({
+        name,
+        email,
+        phone,
+        room: cart.name,
+        check_in: ci.value,
+        check_out: co.value,
+        adults: cart.adults,
+        children: cart.children,
+        requests,
+        total_amount: total,
       });
+
+      // Fetch with timeout + 1 automatic retry (Render free tier cold-starts)
+      const MAX_RETRIES = 1;
+      const TIMEOUT_MS  = 45000; // 45 seconds (Render can take 30-60s to wake)
+
+      let resp;
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+        try {
+          resp = await fetch(apiBase + "/api/payment/initiate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: payloadBody,
+            signal: controller.signal,
+          });
+          clearTimeout(timer);
+          break; // success — exit retry loop
+        } catch (fetchErr) {
+          clearTimeout(timer);
+          if (attempt < MAX_RETRIES) {
+            // Server may be cold-starting — wait 3s and retry once
+            if (submitBtn) submitBtn.textContent = "Server waking up… retrying…";
+            await new Promise(r => setTimeout(r, 3000));
+            continue;
+          }
+          throw fetchErr; // final attempt failed
+        }
+      }
 
       if (!resp.ok) {
         // Server returned a JSON error
@@ -542,7 +568,10 @@
       }
       msg.style.display = "block";
       msg.className = "bk-msg error";
-      msg.textContent = "⚠️ Payment gateway error: " + err.message + ". Please try again.";
+      const isNetworkErr = err.name === "AbortError" || err.message === "Failed to fetch";
+      msg.textContent = isNetworkErr
+        ? "⚠️ Could not reach the payment server. It may be starting up — please wait 30 seconds and try again."
+        : "⚠️ Payment gateway error: " + err.message + ". Please try again.";
     }
   });
 
