@@ -545,9 +545,17 @@
       }
 
       if (!resp.ok) {
-        // Server returned a JSON error
-        const err = await resp.json().catch(() => ({ error: "Server error" }));
-        throw new Error(err.error || "Could not initiate payment");
+        let errorDetail = "";
+        try {
+          const errData = await resp.json();
+          if (errData && errData.error) errorDetail = errData.error;
+        } catch (_) {
+          const rawText = await resp.text().catch(() => "");
+          if (rawText && !rawText.includes("<!doctype html>")) {
+            errorDetail = rawText.slice(0, 120);
+          }
+        }
+        throw new Error(errorDetail || ("Payment server error (Status " + resp.status + ")"));
       }
 
       // The server returns an HTML page that auto-submits to CCAvenue.
