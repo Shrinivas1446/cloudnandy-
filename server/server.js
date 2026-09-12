@@ -171,6 +171,16 @@ function parseCCAResponse(decrypted) {
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
+// Root route
+app.get("/", (_req, res) => {
+  res.json({
+    service: "Cloud Nandy Hills API",
+    status: "running",
+    version: "1.0.0",
+    endpoints: ["/api/health", "/api/properties", "/api/bookings", "/api/payment/initiate"],
+  });
+});
+
 // Health check
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, timestamp: new Date().toISOString() });
